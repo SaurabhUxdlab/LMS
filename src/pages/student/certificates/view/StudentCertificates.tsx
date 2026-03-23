@@ -39,29 +39,25 @@ interface InProgressCourse {
 
 // Real course images - mapped by course name
 const certificateImages: Record<string, string> = {
-    '1': '/src/assets/react.svg',
-    '2': '/vite.svg',
-    '3': '/vite.svg',
-    '4': '/vite.svg',
-    'react': '/src/assets/react.svg',
-    'javascript': '/vite.svg',
-    'typescript': '/vite.svg',
-    'node': '/vite.svg',
-    'python': '/vite.svg',
-    'native': '/src/assets/react.svg',
-    'default': '/vite.svg'
+    'react': 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop',
+    'javascript': 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400&h=250&fit=crop',
+    'typescript': 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=250&fit=crop',
+    'node': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop',
+    'python': 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=250&fit=crop',
+    'native': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop',
+    'default': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop'
 }
 
 // Get image based on course name
 const getCertificateImage = (cert: { id: string; course: string }): string => {
     const courseLower = cert.course.toLowerCase()
 
-    if (courseLower.includes('react')) return certificateImages['react']
+    if (courseLower.includes('react') && !courseLower.includes('native')) return certificateImages['react']
     if (courseLower.includes('javascript')) return certificateImages['javascript']
     if (courseLower.includes('typescript')) return certificateImages['typescript']
     if (courseLower.includes('node')) return certificateImages['node']
     if (courseLower.includes('python')) return certificateImages['python']
-    if (courseLower.includes('native')) return certificateImages['react']
+    if (courseLower.includes('native')) return certificateImages['native']
 
     return certificateImages[cert.id] || certificateImages.default
 }
@@ -148,7 +144,7 @@ export default function StudentCertificates() {
                             <Award className="h-8 w-8 text-primary" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black tracking-tight text-foreground">
+                            <h1 className="text-2xl font-bold tracking-tight text-foreground">
                                 My Certificates
                             </h1>
                         </div>
@@ -159,12 +155,12 @@ export default function StudentCertificates() {
                 </header>
 
                 {/* Search Bar */}
-                <div className="mb-10">
-                    <div className="relative max-w-xl">
+                <div className="mb-10 pb-4">
+                    <div className="relative w-full md:w-96">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                         <Input
                             placeholder="Search certificates by course or credential ID..."
-                            className="h-14 pl-14 pr-4 shadow-md border-2 border-transparent focus:border-primary rounded-2xl"
+                            className="h-14 pl-14 pr-4 shadow-md border-2 border-border focus:border-primary rounded-2xl"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -173,41 +169,41 @@ export default function StudentCertificates() {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                    <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-0 shadow-lg">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-primary/20 rounded-xl">
-                                    <Award className="h-6 w-6 text-primary" />
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <Award className="h-5 w-5 text-primary" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground font-medium">Total Certificates</p>
-                                    <p className="text-3xl font-black">{certificates.length}</p>
+                                    <p className="text-xs text-muted-foreground font-medium">Total Certificates</p>
+                                    <p className="text-2xl font-bold">{certificates.length}</p>
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-0 shadow-lg">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-primary/20 rounded-xl">
-                                    <FileText className="h-6 w-6 text-primary" />
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <FileText className="h-5 w-5 text-primary" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground font-medium">This Year</p>
-                                    <p className="text-3xl font-black">{certificates.length}</p>
+                                    <p className="text-xs text-muted-foreground font-medium">This Year</p>
+                                    <p className="text-2xl font-bold">{certificates.length}</p>
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-br from-green-5 to-green-10 border-0 shadow-lg">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-green-500/20 rounded-xl">
-                                    <TrendingUp className="h-6 w-6 text-green-600" />
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-green-500/10 rounded-lg">
+                                    <TrendingUp className="h-5 w-5 text-green-600" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground font-medium">In Progress</p>
-                                    <p className="text-3xl font-black">{nearingCompletion.length}</p>
+                                    <p className="text-xs text-muted-foreground font-medium">In Progress</p>
+                                    <p className="text-2xl font-bold">{nearingCompletion.length}</p>
                                 </div>
                             </div>
                         </CardContent>

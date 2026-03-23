@@ -43,9 +43,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 
     const role = userDoc?.role || "homeowner";
     const uid =
-  userDoc?.id ||
-  (typeof authRes !== "boolean" ? authRes.user?.uid : null) ||
-  null;
+      userDoc?.id ||
+      (typeof authRes !== "boolean" ? authRes.user?.uid : null) ||
+      null;
 
     // Update redux
     dispatch(
@@ -64,7 +64,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
     } else if (role === "admin") {
       navigate("/admin/dashboard");
     } else {
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 

@@ -1,5 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { BookOpen, GraduationCap, Trophy, Clock } from "lucide-react";
 
 export const StudentDashboard = () => {
     // Hardcoded data for UI demo
@@ -45,11 +46,76 @@ export const StudentDashboard = () => {
                     <div className="lg:col-span-8">
                         <div className="mb-6 flex flex-col gap-1">
 
-                            <h1 className="text-4xl font-black tracking-tight text-foreground">
+                            <h1 className="text-2xl font-bold tracking-tight text-foreground">
                                 Welcome back, Alex
                             </h1>
                             <p className="text-muted-foreground text-lg">Continue Learning</p>
                         </div>
+                    </div>
+                </div>
+
+                {/* KPI Cards - Full Width */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-blue-500/10 rounded-lg">
+                                    <BookOpen className="h-5 w-5 text-blue-500" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-muted-foreground font-medium">Enrolled Courses</p>
+                                    <p className="text-2xl font-bold">8</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-green-500/10 rounded-lg">
+                                    <GraduationCap className="h-5 w-5 text-green-500" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-muted-foreground font-medium">Completed</p>
+                                    <p className="text-2xl font-bold">3</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-amber-500/10 rounded-lg">
+                                    <Trophy className="h-5 w-5 text-amber-500" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-muted-foreground font-medium">Certificates</p>
+                                    <p className="text-2xl font-bold">2</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-purple-500/10 rounded-lg">
+                                    <Clock className="h-5 w-5 text-purple-500" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-muted-foreground font-medium">Learning Hours</p>
+                                    <p className="text-2xl font-bold">48</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Main Content */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="lg:col-span-8">
                         <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm overflow-hidden">
                             <div className="h-64 sm:h-80 bg-[url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80')] bg-center bg-cover" />
                             <div className="p-6">

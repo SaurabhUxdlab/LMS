@@ -24,21 +24,17 @@ interface Course {
 
 // Real course images - mapped by course title/category
 const courseImages: Record<string, string> = {
-  'coding': '/src/assets/react.svg',
-  'web': '/vite.svg',
-  'mobile': '/vite.svg',
-  'backend': '/vite.svg',
-  'react': '/src/assets/react.svg',
-  'javascript': '/vite.svg',
-  'typescript': '/vite.svg',
-  'node': '/vite.svg',
-  'python': '/vite.svg',
-  'react-native': '/src/assets/react.svg',
-  'frontend': '/src/assets/react.svg',
-  'web dev': '/vite.svg',
-  'mobile app': '/vite.svg',
-  'backend dev': '/vite.svg',
-  'default': '/vite.svg'
+  'react': 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop',
+  'javascript': 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400&h=250&fit=crop',
+  'typescript': 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=250&fit=crop',
+  'node': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop',
+  'python': 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=250&fit=crop',
+  'react-native': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop',
+  'frontend': 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop',
+  'web dev': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=250&fit=crop',
+  'mobile app': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop',
+  'backend dev': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop',
+  'default': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop'
 }
 
 const getCategoryImage = (category: string): string => {
@@ -50,7 +46,7 @@ const getCourseImage = (course: { title: string; category: string }): string => 
   const titleLower = course.title.toLowerCase()
   const categoryLower = course.category.toLowerCase()
 
-  if (titleLower.includes('react')) return courseImages['react']
+  if (titleLower.includes('react') && !titleLower.includes('native')) return courseImages['react']
   if (titleLower.includes('javascript')) return courseImages['javascript']
   if (titleLower.includes('typescript')) return courseImages['typescript']
   if (titleLower.includes('node')) return courseImages['node']
@@ -58,8 +54,8 @@ const getCourseImage = (course: { title: string; category: string }): string => 
   if (titleLower.includes('native')) return courseImages['react-native']
   if (titleLower.includes('frontend') || titleLower.includes('front-end')) return courseImages['frontend']
   if (titleLower.includes('backend') || titleLower.includes('back-end')) return courseImages['backend']
-  if (titleLower.includes('web')) return courseImages['web']
-  if (titleLower.includes('mobile')) return courseImages['mobile']
+  if (titleLower.includes('web')) return courseImages['web dev']
+  if (titleLower.includes('mobile')) return courseImages['mobile app']
 
   return courseImages[categoryLower] || courseImages.default
 }
@@ -244,43 +240,40 @@ export default function ExploreCourses() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="mx-auto pl-1 py-4">
         {/* Header */}
-        <header className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-3 bg-primary/10 rounded-2xl">
-              <BookOpen className="h-8 w-8 text-primary" />
+        <header className="mb-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-primary/10 rounded-xl">
+              <BookOpen className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight text-foreground">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">
                 Explore Courses
               </h1>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Discover software development courses and start learning today
+          <p className="text-sm text-muted-foreground">
+            Discover software development courses
           </p>
         </header>
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-
+        {/* Top Row: Filters + Search */}
+        <div className="flex flex-col lg:flex-row gap-4 mb-4">
           {/* Filters Sidebar */}
-          <aside className="lg:w-80 lg:flex-shrink-0 lg:sticky lg:top-8">
-            <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-card">
-              <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6">
-                <h2 className="text-2xl font-bold flex items-center gap-3 text-foreground">
-                  <div className="p-2 bg-primary/20 rounded-xl">
-                    <Filter className="h-5 w-5 text-primary" />
-                  </div>
+          <aside className="lg:w-72 xl:w-80 flex-shrink-0">
+            <Card className="shadow-lg border-0 rounded-xl overflow-hidden bg-card">
+              <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-3">
+                <h2 className="text-base font-bold flex items-center gap-2 text-foreground">
+                  <Filter className="h-4 w-4 text-primary" />
                   Filters
                 </h2>
               </div>
-              <CardContent className="p-6 pt-4 space-y-6">
+              <CardContent className="p-3 space-y-4">
                 <RangeSlider
                   value={filters.price}
                   onValueChange={value => setFilters(prev => ({ ...prev, price: value }))}
                   max={150}
-                  label="Price Range"
+                  label="Price"
                 />
-
                 <RangeSlider
                   value={filters.duration}
                   onValueChange={value => setFilters(prev => ({ ...prev, duration: value }))}
@@ -288,61 +281,53 @@ export default function ExploreCourses() {
                   label="Duration"
                   unit="h"
                 />
-
                 <div>
-                  <Label className="text-sm font-semibold mb-4 block text-foreground">Experience Level</Label>
+                  <Label className="text-xs font-semibold mb-2 block text-foreground">Level</Label>
                   <LevelFilter
                     value={filters.level}
                     onValueChange={value => setFilters(prev => ({ ...prev, level: value }))}
                   />
                 </div>
-
-                <div className="pt-4 border-t">
-                  <Label className="text-sm font-semibold mb-4 block text-foreground">Categories</Label>
-                  <div className="flex flex-wrap gap-2">
+                <div className="pt-2 border-t">
+                  <Label className="text-xs font-semibold mb-2 block text-foreground">Categories</Label>
+                  <div className="flex flex-wrap gap-1">
                     {categories.map(cat => (
                       <Badge
                         key={cat.name}
                         variant={selectedCategories.includes(cat.name) ? "default" : "outline"}
-                        className={`px-4 py-2 cursor-pointer hover:scale-105 transition-all border-2 font-semibold ${selectedCategories.includes(cat.name)
-                          ? 'bg-primary border-primary'
-                          : 'border-transparent hover:border-primary/50 bg-muted/50'
+                        className={`text-xs px-2 py-0.5 cursor-pointer ${selectedCategories.includes(cat.name)
+                          ? 'bg-primary'
+                          : 'bg-muted/50'
                           }`}
                         onClick={() => toggleCategory(cat.name)}
                       >
-                        <span className="mr-1.5">{cat.icon}</span>
                         {cat.label}
                       </Badge>
                     ))}
                   </div>
                 </div>
-
-                <Button onClick={clearFilters} className="w-full font-bold" variant="outline">
-                  <X className="h-4 w-4 mr-2" />
-                  Clear All Filters
+                <Button onClick={clearFilters} className="w-full text-xs" variant="outline" size="sm">
+                  Clear
                 </Button>
               </CardContent>
             </Card>
           </aside>
 
-          {/* Main Content */}
-          <main className="flex-1 min-w-0">
+          {/* Search + Content */}
+          <div className="flex-1">
             {/* Search Bar */}
-            <div className="mb-8">
-              <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    placeholder="Search courses, instructors..."
-                    className="h-14 pl-14 pr-4 shadow-lg border-2 border-transparent focus:border-primary rounded-2xl"
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center gap-3 text-muted-foreground bg-muted/30 px-4 py-2 rounded-xl">
-                  <span className="font-semibold">{filteredCourses.length}</span>
-                  <span>courses found</span>
-                </div>
+            <div className="flex gap-3 items-center mb-4">
+              <div className="flex-1 max-w-md relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search courses..."
+                  className="h-10 pl-10 pr-3 border rounded-lg text-sm"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="text-sm text-muted-foreground whitespace-nowrap">
+                <span className="font-medium">{filteredCourses.length}</span> courses
               </div>
             </div>
 
@@ -466,9 +451,9 @@ export default function ExploreCourses() {
                 </Card>
               )}
             </section>
-          </main>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
