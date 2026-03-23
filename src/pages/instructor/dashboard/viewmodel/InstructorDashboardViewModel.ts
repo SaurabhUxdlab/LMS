@@ -1,3 +1,5 @@
+
+
 import { useState, useEffect } from "react";
 import type { Course, Activity } from "../model/InstructorDashboardModel";
 
@@ -10,7 +12,6 @@ export const useInstructorDashboardViewModel = () => {
     const [recentActivities, setRecentActivities] = useState<Activity[]>([]);
 
     useEffect(() => {
-        // Simulate API call to fetch dashboard data
         const timer = setTimeout(() => {
             const fetchedCourses: Course[] = [
                 {
@@ -46,19 +47,40 @@ export const useInstructorDashboardViewModel = () => {
             ];
 
             const fetchedActivities: Activity[] = [
-                { type: "New Enrollment", student: "Alex", course: "Introduction to Digital Marketing" },
-                { type: "New Review", student: "Emily", rating: "5 stars", course: "Advanced Data Analysis with Python" },
-                { type: "New Enrollment", student: "David", course: "Creative Writing for Professionals" },
-                { type: "New Review", student: "Olivia", rating: "4 stars", course: "Business Communication Strategies" },
+                {
+                    type: "New Enrollment",
+                    student: "Alex",
+                    course: "Introduction to Digital Marketing",
+                },
+                {
+                    type: "New Review",
+                    student: "Emily",
+                    course: "Advanced Data Analysis with Python",
+                    rating: "5 stars",
+                },
+                {
+                    type: "New Enrollment",
+                    student: "David",
+                    course: "Creative Writing for Professionals",
+                },
+                {
+                    type: "New Review",
+                    student: "Olivia",
+                    course: "Business Communication Strategies",
+                    rating: "4 stars",
+                },
             ];
 
             setCourses(fetchedCourses);
-            setTotalStudents(fetchedCourses.reduce((sum, course) => sum + course.enrollment, 0));
+            setTotalStudents(
+                fetchedCourses.reduce((sum, c) => sum + c.enrollment, 0)
+            );
             setAvgRating(4.8);
             setTotalRevenue(12500);
             setRecentActivities(fetchedActivities);
+
             setIsLoading(false);
-        }, 1000);
+        }, 800);
 
         return () => clearTimeout(timer);
     }, []);

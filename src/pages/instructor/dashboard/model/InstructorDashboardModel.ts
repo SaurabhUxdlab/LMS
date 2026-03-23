@@ -1,3 +1,4 @@
+
 export interface Course {
     id: string;
     title: string;
@@ -9,7 +10,7 @@ export interface Activity {
     type: "New Enrollment" | "New Review";
     student: string;
     course: string;
-    rating?: string;
+    rating?: string; // only for review
 }
 
 export interface InstructorDashboardData {
