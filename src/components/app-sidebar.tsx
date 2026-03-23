@@ -16,6 +16,7 @@ import {
   Eye,
   BookOpen,
   Award,
+  Search,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -57,6 +58,7 @@ const data = {
     },
   ],
   studentNav: [
+
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -66,6 +68,11 @@ const data = {
       title: "My Courses",
       url: "/my-courses",
       icon: BookOpen,
+    },
+    {
+      title: "Explore Courses",
+      url: "/explore-courses",
+      icon: Search,
     },
     {
       title: "Certificates",

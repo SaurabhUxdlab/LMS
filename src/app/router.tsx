@@ -4,6 +4,7 @@ import Layout from "./layout/Layout";
 import { StudentDashboard } from "@/pages/student/dashboard/view/StudentDashboard";
 import { MyCourses } from "@/pages/student/my-courses/view/MyCourses";
 import StudentCertificates from "@/pages/student/certificates/view/StudentCertificates";
+import ExploreCourses from "@/pages/student/explore-courses/ExploreCourses";
 import { AdminDashboard } from "@/pages/admin/dashboard/view/AdminDashboard";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
 import NotFound from "@/pages/NotFound";
@@ -55,6 +56,14 @@ export const appRoutes: RouteObject[] = [
         element: (
           <ProtectedRoute allowedRoles={["student"]}>
             <StudentDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "explore-courses",
+        element: (
+          <ProtectedRoute allowedRoles={["student"]}>
+            <ExploreCourses />
           </ProtectedRoute>
         ),
       },
