@@ -57,7 +57,15 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
     );
 
     setLoading(false);
-    navigate("/dashboard");
+
+    // Navigate based on role
+    if (role === "instructor") {
+      navigate("/instructor/dashboard");
+    } else if (role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (

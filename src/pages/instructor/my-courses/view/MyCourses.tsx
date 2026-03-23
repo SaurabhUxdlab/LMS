@@ -20,10 +20,10 @@ const MyCourses = () => {
           </p>
         </div>
 
-        {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-          <Plus size={16} className="mr-2" />
-          Create Course
-        </Button> */}
+      <Button className="bg-[#15803D] hover:bg-[#166534] text-white">
+  <Plus size={16} className="mr-2" />
+  Create Course
+</Button>
       </div>
 
       {/* SEARCH + FILTER */}
