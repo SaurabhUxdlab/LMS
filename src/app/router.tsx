@@ -55,6 +55,14 @@ export const appRoutes: RouteObject[] = [
     element: <LayoutWrapper />,
     children: [
       {
+        index: true,
+        element: (
+          <ProtectedRoute allowedRoles={["student"]}>
+            <StudentDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "*",
         element: <NotFound />,
       },

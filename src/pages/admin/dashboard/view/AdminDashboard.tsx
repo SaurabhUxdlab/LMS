@@ -23,8 +23,8 @@ export const AdminDashboard = () => {
 
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-zinc-950">
-            <div className="max-w-[1400px] mx-auto px-4 pb-12">
-                <div className="pt-8 space-y-8">
+            <div className="mx-auto pl-1 py-4">
+                <div className="space-y-8">
                     {/* Header */}
                     <div className="flex flex-col gap-1">
                         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>

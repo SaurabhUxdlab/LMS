@@ -253,7 +253,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const navItems = getRoleNavigation().map((item) => ({
     ...item,
-    isActive: location.pathname === item.url,
+    isActive: location.pathname === item.url || (item.url === '/dashboard' && location.pathname === '/'),
   }))
 
   return (

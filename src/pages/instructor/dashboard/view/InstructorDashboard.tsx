@@ -37,7 +37,7 @@ export const InstructorDashboard = () => {
 
     return (
         <div className="min-h-screen  from-slate-50 via-white to-slate-100 dark:from-zinc-950 dark:to-zinc-900">
-            <div className="max-w-[1400px] mx-auto px-4 py-8">
+            <div className="mx-auto pl-1 py-4">
 
                 {/* Header */}
                 <div className="mb-8">
