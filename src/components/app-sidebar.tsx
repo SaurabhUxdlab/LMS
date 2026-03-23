@@ -56,7 +56,7 @@ const data = {
       plan: "Free",
     },
   ],
-   studentNav: [
+  studentNav: [
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -64,12 +64,12 @@ const data = {
     },
     {
       title: "My Courses",
-      url: "/courses",
+      url: "/my-courses",
       icon: BookOpen,
     },
     {
       title: "Certificates",
-      url: "/certifications",
+      url: "/certificates",
       icon: Award,
     },
     {
@@ -159,59 +159,59 @@ const data = {
   instructorNav: [
     {
       title: "Dashboard",
-      url: "/instructor-dashboard",
+      url: "/instructor/dashboard",
       icon: LayoutDashboard,
     },
     {
       title: "My Courses",
-      url: "/courses",
+      url: "/instructor/my-courses",
       icon: BookOpen,
     },
     {
       title: "Create Course",
-      url: "/create-course",
+      url: "/instructor/create-course",
       icon: FileText,
     },
     {
       title: "Analytics",
-      url: "/instructor-analytics",
+      url: "/instructor/analytics",
       icon: BarChart3,
     },
     {
       title: "Settings",
-      url: "/settings",
+      url: "/instructor/settings",
       icon: Settings,
     },
   ],
   adminNav: [
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "/admin/dashboard",
       icon: LayoutDashboard,
     },
     {
       title: "Students",
-      url: "/students",
+      url: "/admin/students",
       icon: Users,
     },
     {
       title: "Instructors",
-      url: "/instructors",
+      url: "/admin/instructors",
       icon: BookOpen,
     },
     {
       title: "Courses",
-      url: "/admin-courses",
+      url: "/admin/courses",
       icon: FileText,
     },
     {
       title: "Reports",
-      url: "/reports",
+      url: "/admin/reports",
       icon: BarChart3,
     },
     {
       title: "Settings",
-      url: "/settings",
+      url: "/admin/settings",
       icon: Settings,
     },
   ],
