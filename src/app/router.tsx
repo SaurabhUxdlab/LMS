@@ -3,6 +3,10 @@ import Layout from "./layout/Layout";
 
 import { StudentDashboard } from "@/pages/student/dashboard/view/StudentDashboard";
 import { MyCourses } from "@/pages/student/my-courses/view/MyCourses";
+import StudentCertificates from "@/pages/student/certificates/view/StudentCertificates";
+import { AdminDashboard } from "@/pages/admin/dashboard/view/AdminDashboard";
+import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
+import NotFound from "@/pages/NotFound";
 
 // Removed broken course imports
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -41,6 +45,10 @@ export const appRoutes: RouteObject[] = [
     path: "/",
     element: <LayoutWrapper />,
     children: [
+      {
+        path: "*",
+        element: <NotFound />,
+      },
       // Student routes
       {
         path: "dashboard",
@@ -58,7 +66,42 @@ export const appRoutes: RouteObject[] = [
           </ProtectedRoute>
         ),
       },
-
+      {
+        path: "certificates",
+        element: (
+          <ProtectedRoute allowedRoles={["student"]}>
+            <StudentCertificates />
+          </ProtectedRoute>
+        ),
+      },
+      // Admin routes
+      {
+        path: "admin",
+        children: [
+          {
+            path: "dashboard",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      // Instructor routes
+      {
+        path: "instructor",
+        children: [
+          {
+            path: "dashboard",
+            element: (
+              <ProtectedRoute allowedRoles={["instructor"]}>
+                <InstructorDashboard />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
     ],
   },
 ];

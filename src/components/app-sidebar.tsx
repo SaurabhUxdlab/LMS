@@ -127,7 +127,7 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
-    },
+    },  
     {
       title: "Support Tickets",
       url: "/tickets",
