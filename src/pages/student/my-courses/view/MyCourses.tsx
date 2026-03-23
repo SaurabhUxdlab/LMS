@@ -19,28 +19,24 @@ interface Course {
 
 // Real course images - mapped by course title/id
 const courseImages: Record<string, string> = {
-  '1': '/src/assets/react.svg',
-  '2': '/vite.svg',
-  '3': '/vite.svg',
-  '4': '/vite.svg',
-  '5': '/vite.svg',
-  'react': '/src/assets/react.svg',
-  'javascript': '/vite.svg',
-  'typescript': '/vite.svg',
-  'node': '/vite.svg',
-  'python': '/vite.svg',
-  'default': '/vite.svg'
+  'react': 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop',
+  'javascript': 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400&h=250&fit=crop',
+  'typescript': 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=250&fit=crop',
+  'node': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop',
+  'python': 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=250&fit=crop',
+  'default': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop'
 }
 
 // Get image based on course title or id
 const getCourseImage = (course: { id: string; title?: string }): string => {
   const titleLower = course.title?.toLowerCase() || ''
 
-  if (titleLower.includes('react')) return courseImages['react']
+  if (titleLower.includes('react') && !titleLower.includes('native')) return courseImages['react']
   if (titleLower.includes('javascript')) return courseImages['javascript']
   if (titleLower.includes('typescript')) return courseImages['typescript']
   if (titleLower.includes('node')) return courseImages['node']
   if (titleLower.includes('python')) return courseImages['python']
+  if (titleLower.includes('native')) return 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop'
 
   return courseImages[course.id] || courseImages.default
 }
@@ -116,7 +112,7 @@ export const MyCourses = () => {
   const handleCertificate = (id: string) => navigate(`/certificates`)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="mx-auto pl-1 py-4">
 
         {/* Header */}
@@ -126,7 +122,7 @@ export const MyCourses = () => {
               <GraduationCap className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight text-foreground">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">
                 My Learning
               </h1>
             </div>
@@ -138,41 +134,41 @@ export const MyCourses = () => {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-0 shadow-lg">
-            <CardContent className="p-2.5">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-primary/20 rounded-xl">
-                  <BookOpen className="h-6 w-6 text-primary" />
+          <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground font-medium">Total Courses</p>
-                  <p className="text-3xl font-black">{courses.length}</p>
+                  <p className="text-xs text-muted-foreground font-medium">Total Courses</p>
+                  <p className="text-2xl font-bold">{courses.length}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-gradient-to-br from-amber-5 to-amber-10 border-0 shadow-lg">
-            <CardContent className="p-2.5">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-amber-500/20 rounded-xl">
-                  <TrendingUp className="h-6 w-6 text-amber-600" />
+          <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-500/10 rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-amber-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground font-medium">In Progress</p>
-                  <p className="text-3xl font-black">{inProgress.length}</p>
+                  <p className="text-xs text-muted-foreground font-medium">In Progress</p>
+                  <p className="text-2xl font-bold">{inProgress.length}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-gradient-to-br from-green-5 to-green-10 border-0 shadow-lg">
-            <CardContent className="p-2.5">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-500/20 rounded-xl">
-                  <Award className="h-6 w-6 text-green-600" />
+          <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm rounded-xl">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-500/10 rounded-lg">
+                  <Award className="h-5 w-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground font-medium">Completed</p>
-                  <p className="text-3xl font-black">{completed.length}</p>
+                  <p className="text-xs text-muted-foreground font-medium">Completed</p>
+                  <p className="text-2xl font-bold">{completed.length}</p>
                 </div>
               </div>
             </CardContent>

@@ -19,16 +19,16 @@ const LMSNavbar = () => {
     }
 
     const studentTabs = [
-        { name: 'Dashboard', path: '/student-dashboard', icon: GraduationCap },
-        { name: 'My Courses', path: '/student-my-courses', icon: BookOpen },
-        { name: 'Certificates', path: '/student-certificates', icon: 'award' },
-        { name: 'Community', path: '/student-community', icon: 'users' },
-        { name: 'Settings', path: '/student-settings', icon: Settings },
+        { name: 'Dashboard', path: '/dashboard', icon: GraduationCap },
+        { name: 'My Courses', path: '/my-courses', icon: BookOpen },
+        { name: 'Certificates', path: '/certificates', icon: 'award' },
+        { name: 'Community', path: '/community', icon: 'users' },
+        { name: 'Settings', path: '/settings', icon: Settings },
     ];
 
     const instructorTabs = [
-        { name: 'Dashboard', path: '/instructor-dashboard', icon: GraduationCap },
-        { name: 'My Courses', path: '/instructor-my-courses', icon: BookOpen },
+        { name: 'Dashboard', path: '/instructor/dashboard', icon: GraduationCap },
+        { name: 'My Courses', path: '/instructor/my-courses', icon: BookOpen },
         { name: 'Create Course', path: '/instructor-create-course', icon: Plus },
         { name: 'Analytics', path: '/instructor-analytics', icon: BarChart3 },
         { name: 'Settings', path: '/instructor-settings', icon: Settings },
@@ -67,8 +67,8 @@ const LMSNavbar = () => {
                                 to={tab.path}
                                 className={({ isActive }) =>
                                     `px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isActive
-                                        ? 'bg-blue-600 text-white shadow-md'
-                                        : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                        ? 'bg-primary/10 text-primary font-semibold'
+                                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
                                     }`
                                 }
                             >
@@ -112,8 +112,8 @@ const LMSNavbar = () => {
                                     to={tab.path}
                                     className={({ isActive }) =>
                                         `flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive
-                                            ? 'bg-blue-600 text-white'
-                                            : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                            ? 'bg-primary/10 text-primary font-semibold'
+                                            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
                                         }`
                                     }
                                     onClick={() => setIsOpen(false)}

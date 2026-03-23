@@ -215,7 +215,7 @@ export default function StudentCommunity() {
               <MessageCircle className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight text-foreground">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">
                 Community
               </h1>
             </div>
