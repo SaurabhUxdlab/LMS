@@ -35,8 +35,8 @@ const LMSNavbar = () => {
     ];
 
     const adminTabs = [
-        { name: 'Dashboard', path: '/admin-dashboard', icon: GraduationCap },
-        { name: 'Students', path: '/admin-students', icon: Users },
+        { name: 'Dashboard', path: '/admin/dashboard', icon: GraduationCap },
+        { name: 'Students', path: '/admin/students', icon: Users },
         { name: 'Instructors', path: '/admin-instructors', icon: User },
         { name: 'Courses', path: '/admin-courses', icon: BookOpen },
         { name: 'Reports', path: '/admin-reports', icon: FileText },

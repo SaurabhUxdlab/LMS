@@ -51,7 +51,7 @@ const LoadingSkeleton = () => (
       <div className="h-10 bg-muted rounded w-64 mb-4" />
       <div className="h-5 bg-muted rounded w-96" />
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
       {Array(3).fill(0).map((_, i) => (
         <div key={i} className="space-y-4">
           <div className="h-56 bg-muted rounded-2xl animate-pulse" />
@@ -117,7 +117,7 @@ export const MyCourses = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-8">
-      <div className="max-w-[1400px] mx-auto px-4 pb-12">
+      <div className="mx-auto pl-1 py-4">
 
         {/* Header */}
         <header className="mb-12">
@@ -126,7 +126,7 @@ export const MyCourses = () => {
               <GraduationCap className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-black tracking-tight text-foreground">
                 My Learning
               </h1>
             </div>
@@ -139,7 +139,7 @@ export const MyCourses = () => {
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
           <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-0 shadow-lg">
-            <CardContent className="p-6">
+            <CardContent className="p-2.5">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-primary/20 rounded-xl">
                   <BookOpen className="h-6 w-6 text-primary" />
@@ -152,7 +152,7 @@ export const MyCourses = () => {
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-amber-5 to-amber-10 border-0 shadow-lg">
-            <CardContent className="p-6">
+            <CardContent className="p-2.5">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-amber-500/20 rounded-xl">
                   <TrendingUp className="h-6 w-6 text-amber-600" />
@@ -165,7 +165,7 @@ export const MyCourses = () => {
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-green-5 to-green-10 border-0 shadow-lg">
-            <CardContent className="p-6">
+            <CardContent className="p-2.5">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-green-500/20 rounded-xl">
                   <Award className="h-6 w-6 text-green-600" />
@@ -186,26 +186,26 @@ export const MyCourses = () => {
               <Sparkles className="h-5 w-5 text-primary" />
               <span className="text-sm font-semibold text-primary uppercase tracking-wider">Pick up where you left off</span>
             </div>
-            <Card className="group border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-card to-card/50 rounded-2xl">
+            <Card className="group border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden bg-gradient-to-r from-card to-card/50 rounded-lg">
               <div className="flex flex-col lg:flex-row">
                 {/* Image Section */}
-                <div className="lg:w-2/5 relative overflow-hidden rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none">
+                <div className="lg:w-1/3 relative overflow-hidden rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
                   <img
                     src={continueCourse.thumbnail || '/vite.svg'}
                     alt={continueCourse.title}
-                    className="w-full h-56 lg:h-full min-h-[280px] object-cover group-hover:scale-110 transition-transform duration-700 rounded-t-2xl lg:rounded-l-2xl"
+                    className="w-full h-32 lg:h-full min-h-[140px] object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-lg lg:rounded-l-lg"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <Badge className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm font-bold px-4 py-1.5 shadow-lg">
-                    <Play className="h-3 w-3 mr-1.5" />
-                    Continue Learning
+                  <Badge className="absolute top-2 left-2 bg-primary/90 backdrop-blur-sm font-bold px-2 py-0.5 shadow-lg text-xs">
+                    <Play className="h-2 w-2 mr-1" />
+                    Continue
                   </Badge>
                 </div>
 
                 {/* Content Section */}
-                <div className="lg:w-3/5 p-8 flex flex-col justify-center">
-                  <div className="flex items-center gap-2 mb-3">
+                <div className="lg:w-2/3 p-4 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 mb-1">
                     <Badge variant="outline" className="text-xs font-medium">
                       <Clock className="h-3 w-3 mr-1" />
                       {continueCourse.duration || 'N/A'}
@@ -216,18 +216,18 @@ export const MyCourses = () => {
                     </Badge>
                   </div>
 
-                  <h2 className="text-2xl lg:text-3xl font-black mb-3 group-hover:text-primary transition-colors">
+                  <h2 className="text-lg lg:text-xl font-black mb-1 group-hover:text-primary transition-colors">
                     {continueCourse.title}
                   </h2>
-                  <p className="text-muted-foreground font-medium mb-2">by {continueCourse.instructor}</p>
+                  <p className="text-muted-foreground font-medium mb-1 text-sm">by {continueCourse.instructor}</p>
 
-                  <div className="mb-2 text-sm text-muted-foreground">
-                    <span className="font-medium text-foreground">Last accessed:</span> {continueCourse.lastLesson || 'Latest lesson'}
+                  <div className="mb-1 text-xs text-muted-foreground">
+                    <span className="font-medium text-foreground">Last:</span> {continueCourse.lastLesson || 'Latest lesson'}
                   </div>
 
-                  <div className="my-6">
-                    <div className="flex justify-between text-sm font-semibold mb-2">
-                      <span>Your Progress</span>
+                  <div className="my-3">
+                    <div className="flex justify-between text-xs font-semibold mb-1">
+                      <span>Progress</span>
                       <span className="text-primary">{continueCourse.progress}%</span>
                     </div>
                     <Progress
@@ -261,7 +261,7 @@ export const MyCourses = () => {
               <Badge variant="secondary" className="text-sm font-bold px-3 py-1">{inProgress.length}</Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
               {inProgress.map(course => (
                 <Card
                   key={course.id}
@@ -328,7 +328,7 @@ export const MyCourses = () => {
               <Badge className="text-sm font-bold px-3 py-1 bg-green-600 hover:bg-green-700">{completed.length}</Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
               {completed.map(course => (
                 <Card
                   key={course.id}

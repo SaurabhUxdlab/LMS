@@ -138,8 +138,8 @@ export default function StudentCertificates() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-8">
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+            <div className="mx-auto pl-1 py-4">
 
                 {/* Header */}
                 <header className="mb-12">
@@ -148,7 +148,7 @@ export default function StudentCertificates() {
                             <Award className="h-8 w-8 text-primary" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+                            <h1 className="text-4xl font-black tracking-tight text-foreground">
                                 My Certificates
                             </h1>
                         </div>
@@ -222,7 +222,7 @@ export default function StudentCertificates() {
                     </div>
 
                     {filteredCertificates.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                             {filteredCertificates.map((cert) => (
                                 <Card
                                     key={cert.id}
@@ -322,7 +322,7 @@ export default function StudentCertificates() {
                             <Badge variant="secondary" className="font-bold">{nearingCompletion.length} Courses</Badge>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                             {nearingCompletion.map((course) => (
                                 <Card
                                     key={course.id}

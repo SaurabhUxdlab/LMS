@@ -8,6 +8,8 @@ import StudentCommunity from "@/pages/student/community/view/StudentCommunity";
 import StudentSettings from "@/pages/student/settings/view/StudentSettings";
 import ExploreCourses from "@/pages/student/explore-courses/ExploreCourses";
 import { AdminDashboard } from "@/pages/admin/dashboard/view/AdminDashboard";
+import AdminStudents from "@/pages/admin/students/view/AdminStudents";
+import AdminStudentDetail from "@/pages/admin/students/view/AdminStudentDetail";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
 import InstructorMyCourses from "@/pages/instructor/my-courses/view/MyCourses";
 import CoursePlayer from "@/pages/course/view/CoursePlayer";
@@ -141,6 +143,22 @@ export const appRoutes: RouteObject[] = [
             element: (
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "students",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminStudents />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "students/:id",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminStudentDetail />
               </ProtectedRoute>
             ),
           },

@@ -206,7 +206,7 @@ export default function StudentCommunity() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto pl-1 py-4">
 
         {/* Header */}
         <header className="mb-12">
@@ -215,7 +215,7 @@ export default function StudentCommunity() {
               <MessageCircle className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-black tracking-tight text-foreground">
                 Community
               </h1>
             </div>
@@ -233,8 +233,8 @@ export default function StudentCommunity() {
               variant={activeTab === tab.id ? 'default' : 'ghost'}
               onClick={() => setActiveTab(tab.id)}
               className={`rounded-lg px-4 ${activeTab === tab.id
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:text-foreground'
                 }`}
             >
               {tab.label}
@@ -275,8 +275,8 @@ export default function StudentCommunity() {
                             key={tag}
                             variant={selectedTag === tag ? 'default' : 'outline'}
                             className={`cursor-pointer text-xs ${selectedTag === tag
-                                ? 'bg-primary'
-                                : 'hover:bg-muted'
+                              ? 'bg-primary'
+                              : 'hover:bg-muted'
                               }`}
                             onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
                           >

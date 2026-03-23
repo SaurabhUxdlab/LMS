@@ -36,7 +36,7 @@ export default function Layout({ children }: Props) {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 p-4">{children}</div>
+        <div className="flex-1 p-[10px] m-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   )

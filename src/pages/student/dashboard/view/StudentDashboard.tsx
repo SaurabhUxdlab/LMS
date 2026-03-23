@@ -40,8 +40,8 @@ export const StudentDashboard = () => {
 
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-zinc-950">
-            <div className="max-w-[1400px] mx-auto px-4 pb-12">
-                <div className="pt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="mx-auto pl-1 py-4">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div className="lg:col-span-8">
                         <div className="mb-6 flex flex-col gap-1">
                             <h1 className="text-5xl font-black tracking-tight">Welcome back, Alex</h1>

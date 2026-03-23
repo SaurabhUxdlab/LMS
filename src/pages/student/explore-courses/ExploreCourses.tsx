@@ -242,15 +242,15 @@ export default function ExploreCourses() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="max-w-[1400px] mx-auto px-4 pb-12">
+      <div className="mx-auto pl-1 py-4">
         {/* Header */}
-        <header className="pt-12 mb-12">
+        <header className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-3 bg-primary/10 rounded-2xl">
               <BookOpen className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-black tracking-tight text-foreground">
                 Explore Courses
               </h1>
             </div>
@@ -349,7 +349,7 @@ export default function ExploreCourses() {
             {/* Results */}
             <section>
               {filteredCourses.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                   {filteredCourses.map(course => (
                     <Card
                       key={course.id}
