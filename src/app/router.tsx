@@ -12,6 +12,8 @@ import AdminStudents from "@/pages/admin/students/view/AdminStudents";
 import AdminStudentDetail from "@/pages/admin/students/view/AdminStudentDetail";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
 import InstructorMyCourses from "@/pages/instructor/my-courses/view/MyCourses";
+import Analytics from "@/pages/instructor/Analytics/view/Analytics";
+import Settings from "@/pages/instructor/settings/view/Settings";
 import CoursePlayer from "@/pages/course/view/CoursePlayer";
 import QuizResultView from "@/pages/course/view/QuizResultView";
 import QuizStartView from "@/pages/course/view/QuizStartView";
@@ -173,7 +175,7 @@ export const appRoutes: RouteObject[] = [
         ],
       },
       // Instructor routes
-      {
+     {
         path: "instructor",
         children: [
           {
@@ -189,6 +191,22 @@ export const appRoutes: RouteObject[] = [
             element: (
               <ProtectedRoute allowedRoles={["instructor"]}>
                 <InstructorMyCourses />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "analytics",
+            element: (
+              <ProtectedRoute allowedRoles={["instructor"]}>
+                <Analytics />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "settings",
+            element: (
+              <ProtectedRoute allowedRoles={["instructor"]}>
+                <Settings />
               </ProtectedRoute>
             ),
           },
