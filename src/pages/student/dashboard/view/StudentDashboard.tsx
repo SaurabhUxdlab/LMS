@@ -44,7 +44,10 @@ export const StudentDashboard = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div className="lg:col-span-8">
                         <div className="mb-6 flex flex-col gap-1">
-                            <h1 className="text-5xl font-black tracking-tight">Welcome back, Alex</h1>
+
+                            <h1 className="text-4xl font-black tracking-tight text-foreground">
+                                Welcome back, Alex
+                            </h1>
                             <p className="text-muted-foreground text-lg">Continue Learning</p>
                         </div>
                         <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-sm overflow-hidden">
@@ -67,22 +70,19 @@ export const StudentDashboard = () => {
                                     <div className="p-4">
                                         <h3 className="text-lg font-semibold">{course.title}</h3>
                                         <p className="text-sm text-muted-foreground mt-1">{course.subtitle}</p>
+                                        <div className="mt-3">
+                                            <div className="flex justify-between text-sm mb-1">
+                                                <span className="font-medium">Progress</span>
+                                                <span className="text-primary font-semibold">{course.progress}%</span>
+                                            </div>
+                                            <Progress value={course.progress} />
+                                        </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="mt-8 space-y-4">
-                            {courses.map((course) => (
-                                <div key={course.title}>
-                                    <div className="flex justify-between mb-1">
-                                        <span className="font-medium text-sm">{course.title}</span>
-                                        <span className="text-sm text-muted-foreground">{course.progress}%</span>
-                                    </div>
-                                    <Progress value={course.progress} />
-                                </div>
-                            ))}
-                        </div>
+                        {/* Removed separate progress section - now combined with cards */}
                     </div>
 
                     <aside className="lg:col-span-4">
