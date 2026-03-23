@@ -4,9 +4,14 @@ import Layout from "./layout/Layout";
 import { StudentDashboard } from "@/pages/student/dashboard/view/StudentDashboard";
 import { MyCourses } from "@/pages/student/my-courses/view/MyCourses";
 import StudentCertificates from "@/pages/student/certificates/view/StudentCertificates";
+import StudentCommunity from "@/pages/student/community/view/StudentCommunity";
+import StudentSettings from "@/pages/student/settings/view/StudentSettings";
 import ExploreCourses from "@/pages/student/explore-courses/ExploreCourses";
 import { AdminDashboard } from "@/pages/admin/dashboard/view/AdminDashboard";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
+import CoursePlayer from "@/pages/course/view/CoursePlayer";
+import QuizResultView from "@/pages/course/view/QuizResultView";
+import QuizStartView from "@/pages/course/view/QuizStartView";
 import NotFound from "@/pages/NotFound";
 
 // Removed broken course imports
@@ -80,6 +85,49 @@ export const appRoutes: RouteObject[] = [
         element: (
           <ProtectedRoute allowedRoles={["student"]}>
             <StudentCertificates />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "community",
+        element: (
+          <ProtectedRoute allowedRoles={["student"]}>
+            <StudentCommunity />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <ProtectedRoute allowedRoles={["student"]}>
+            <StudentSettings />
+          </ProtectedRoute>
+        ),
+      },
+      // Course Player - accessible to students and instructors
+      {
+        path: "course/:courseId",
+        element: (
+          <ProtectedRoute allowedRoles={["student", "instructor"]}>
+            <CoursePlayer />
+          </ProtectedRoute>
+        ),
+      },
+      // Quiz Start - accessible to students and instructors
+      {
+        path: "course/:courseId/quiz/:quizId/start",
+        element: (
+          <ProtectedRoute allowedRoles={["student", "instructor"]}>
+            <QuizStartView />
+          </ProtectedRoute>
+        ),
+      },
+      // Quiz Result - accessible to students and instructors
+      {
+        path: "course/:courseId/quiz/:quizId/result",
+        element: (
+          <ProtectedRoute allowedRoles={["student", "instructor"]}>
+            <QuizResultView />
           </ProtectedRoute>
         ),
       },

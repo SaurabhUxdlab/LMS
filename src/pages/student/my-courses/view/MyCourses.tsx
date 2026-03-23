@@ -17,14 +17,32 @@ interface Course {
   lessons?: number
 }
 
-// Professional course images from public folder
+// Real course images - mapped by course title/id
 const courseImages: Record<string, string> = {
-  '1': '/electrical.jpg',
-  '2': '/plumbing.jpg',
-  '3': '/hvac.jpg',
-  '4': '/carpentry.jpg',
-  '5': '/painting.jpg',
-  'default': '/electrical.jpg'
+  '1': '/src/assets/react.svg',
+  '2': '/vite.svg',
+  '3': '/vite.svg',
+  '4': '/vite.svg',
+  '5': '/vite.svg',
+  'react': '/src/assets/react.svg',
+  'javascript': '/vite.svg',
+  'typescript': '/vite.svg',
+  'node': '/vite.svg',
+  'python': '/vite.svg',
+  'default': '/vite.svg'
+}
+
+// Get image based on course title or id
+const getCourseImage = (course: { id: string; title?: string }): string => {
+  const titleLower = course.title?.toLowerCase() || ''
+
+  if (titleLower.includes('react')) return courseImages['react']
+  if (titleLower.includes('javascript')) return courseImages['javascript']
+  if (titleLower.includes('typescript')) return courseImages['typescript']
+  if (titleLower.includes('node')) return courseImages['node']
+  if (titleLower.includes('python')) return courseImages['python']
+
+  return courseImages[course.id] || courseImages.default
 }
 
 const LoadingSkeleton = () => (
@@ -53,33 +71,33 @@ export const MyCourses = () => {
   const courses: Course[] = [
     {
       id: '1',
-      title: 'Electrical Fundamentals',
-      instructor: 'Max Johnson',
-      thumbnail: courseImages['1'],
+      title: 'React - The Complete Guide',
+      instructor: 'Maximilian Schwarzmüller',
+      thumbnail: getCourseImage({ id: '1', title: 'React - The Complete Guide' }),
       progress: 67,
-      lastLesson: 'Wiring Basics - Chapter 5',
-      duration: '12 hours',
-      lessons: 24
+      lastLesson: 'React Hooks - useState',
+      duration: '52 hours',
+      lessons: 178
     },
     {
       id: '2',
-      title: 'Plumbing Mastery',
-      instructor: 'Brad Williams',
-      thumbnail: courseImages['2'],
+      title: 'JavaScript - Zero to Hero',
+      instructor: 'Brad Traversy',
+      thumbnail: getCourseImage({ id: '2', title: 'JavaScript - Zero to Hero' }),
       progress: 45,
-      lastLesson: 'Pipe Fitting Techniques',
-      duration: '18 hours',
-      lessons: 32
+      lastLesson: 'DOM Manipulation',
+      duration: '68 hours',
+      lessons: 220
     },
     {
       id: '3',
-      title: 'HVAC Systems',
-      instructor: 'Sarah Chen',
-      thumbnail: courseImages['3'],
+      title: 'TypeScript Masterclass',
+      instructor: 'Sarah Drasner',
+      thumbnail: getCourseImage({ id: '3', title: 'TypeScript Masterclass' }),
       progress: 100,
-      lastLesson: 'Final Assessment',
-      duration: '15 hours',
-      lessons: 28
+      lastLesson: 'Advanced Types',
+      duration: '24 hours',
+      lessons: 86
     },
   ]
 
@@ -94,12 +112,12 @@ export const MyCourses = () => {
     )
     : undefined
 
-  const handleResume = (id: string) => navigate(`/student/course/${id}`)
-  const handleCertificate = (id: string) => navigate(`/student/certificate/${id}`)
+  const handleResume = (id: string) => navigate(`/course/${id}`)
+  const handleCertificate = (id: string) => navigate(`/certificates`)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1400px] mx-auto px-4 pb-12">
 
         {/* Header */}
         <header className="mb-12">
@@ -168,15 +186,15 @@ export const MyCourses = () => {
               <Sparkles className="h-5 w-5 text-primary" />
               <span className="text-sm font-semibold text-primary uppercase tracking-wider">Pick up where you left off</span>
             </div>
-            <Card className="group border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-card to-card/50">
+            <Card className="group border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-card to-card/50 rounded-2xl">
               <div className="flex flex-col lg:flex-row">
                 {/* Image Section */}
-                <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
+                <div className="lg:w-2/5 relative overflow-hidden rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
                   <img
-                    src={continueCourse.thumbnail || '/electrical.jpg'}
+                    src={continueCourse.thumbnail || '/vite.svg'}
                     alt={continueCourse.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-56 lg:h-full min-h-[280px] object-cover group-hover:scale-110 transition-transform duration-700 rounded-t-2xl lg:rounded-l-2xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <Badge className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm font-bold px-4 py-1.5 shadow-lg">
@@ -247,15 +265,15 @@ export const MyCourses = () => {
               {inProgress.map(course => (
                 <Card
                   key={course.id}
-                  className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 overflow-hidden bg-card cursor-pointer"
+                  className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 overflow-hidden bg-card cursor-pointer rounded-2xl"
                   onClick={() => handleResume(course.id)}
                 >
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-40 overflow-hidden rounded-t-2xl">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10" />
                     <img
-                      src={course.thumbnail || '/electrical.jpg'}
+                      src={course.thumbnail || '/vite.svg'}
                       alt={course.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-t-2xl"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <Badge className="absolute top-3 right-3 bg-amber-500/90 backdrop-blur-sm font-semibold text-xs">
@@ -314,16 +332,16 @@ export const MyCourses = () => {
               {completed.map(course => (
                 <Card
                   key={course.id}
-                  className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 overflow-hidden bg-gradient-to-br from-green-5/30 to-card cursor-pointer"
+                  className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 overflow-hidden bg-gradient-to-br from-green-5/30 to-card cursor-pointer rounded-2xl"
                   onClick={() => handleCertificate(course.id)}
                 >
                   <CardHeader className="p-0">
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative h-40 overflow-hidden rounded-t-2xl">
                       <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-secondary/10" />
                       <img
-                        src={course.thumbnail || '/electrical.jpg'}
+                        src={course.thumbnail || '/vite.svg'}
                         alt={course.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-t-2xl"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                       <div className="absolute top-3 right-3">
@@ -377,7 +395,7 @@ export const MyCourses = () => {
                 Start your learning journey today! Browse our catalog and enroll in courses that interest you.
               </p>
               <Button size="lg" className="font-bold shadow-lg" asChild>
-                <a href="/student/explore-courses">
+                <a href="/explore-courses">
                   <Sparkles className="h-5 w-5 mr-2" />
                   Browse Courses
                 </a>

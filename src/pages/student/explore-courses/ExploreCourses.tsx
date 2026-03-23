@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Filter, X, Clock, DollarSign, ChevronRight, BookOpen, Users, Star, Sparkles, Heart, ShoppingCart } from 'lucide-react'
+import { Search, Filter, X, Clock, DollarSign, ChevronRight, BookOpen, Users, Star, Heart, ShoppingCart } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -22,34 +22,63 @@ interface Course {
   description?: string
 }
 
-// Course images from public folder
+// Real course images - mapped by course title/category
 const courseImages: Record<string, string> = {
-  coding: '/electrical.jpg',
-  marketing: '/plumbing.jpg',
-  design: '/hvac.jpg',
-  business: '/carpet-cleaning.jpg',
-  default: '/electrical.jpg'
+  'coding': '/src/assets/react.svg',
+  'web': '/vite.svg',
+  'mobile': '/vite.svg',
+  'backend': '/vite.svg',
+  'react': '/src/assets/react.svg',
+  'javascript': '/vite.svg',
+  'typescript': '/vite.svg',
+  'node': '/vite.svg',
+  'python': '/vite.svg',
+  'react-native': '/src/assets/react.svg',
+  'frontend': '/src/assets/react.svg',
+  'web dev': '/vite.svg',
+  'mobile app': '/vite.svg',
+  'backend dev': '/vite.svg',
+  'default': '/vite.svg'
 }
 
 const getCategoryImage = (category: string): string => {
-  return courseImages[category] || courseImages.default
+  return courseImages[category.toLowerCase()] || courseImages.default
 }
 
-// Mock data with better images
+// Get image based on course title
+const getCourseImage = (course: { title: string; category: string }): string => {
+  const titleLower = course.title.toLowerCase()
+  const categoryLower = course.category.toLowerCase()
+
+  if (titleLower.includes('react')) return courseImages['react']
+  if (titleLower.includes('javascript')) return courseImages['javascript']
+  if (titleLower.includes('typescript')) return courseImages['typescript']
+  if (titleLower.includes('node')) return courseImages['node']
+  if (titleLower.includes('python')) return courseImages['python']
+  if (titleLower.includes('native')) return courseImages['react-native']
+  if (titleLower.includes('frontend') || titleLower.includes('front-end')) return courseImages['frontend']
+  if (titleLower.includes('backend') || titleLower.includes('back-end')) return courseImages['backend']
+  if (titleLower.includes('web')) return courseImages['web']
+  if (titleLower.includes('mobile')) return courseImages['mobile']
+
+  return courseImages[categoryLower] || courseImages.default
+}
+
+// Mock data with Software Development courses
 const mockCourses: Course[] = [
-  { id: 1, title: 'Electrical Fundamentals', instructor: 'Max Johnson', image: courseImages.coding, level: 'beginner', price: 89, duration: 32, category: 'coding', rating: 4.8, students: 1250, description: 'Master the basics of electrical systems' },
-  { id: 2, title: 'Plumbing Mastery', instructor: 'Brad Williams', image: courseImages.marketing, level: 'intermediate', price: 99, duration: 45, category: 'marketing', rating: 4.6, students: 890, description: 'Complete plumbing guide' },
-  { id: 3, title: 'HVAC Systems', instructor: 'Sarah Chen', image: courseImages.design, level: 'beginner', price: 79, duration: 22, category: 'design', rating: 4.9, students: 2100, description: ' Heating and cooling systems' },
-  { id: 4, title: 'Carpentry Basics', instructor: 'Chris Haroun', image: courseImages.business, level: 'advanced', price: 119, duration: 65, category: 'business', rating: 4.7, students: 650, description: 'Woodworking for beginners' },
-  { id: 5, title: 'Interior Painting', instructor: 'Brad Traversy', image: courseImages.coding, level: 'advanced', price: 69, duration: 28, category: 'coding', rating: 4.5, students: 420, description: 'Professional painting techniques' },
-  { id: 6, title: 'Flooring Installation', instructor: 'Design School', image: courseImages.design, level: 'intermediate', price: 59, duration: 18, category: 'design', rating: 4.8, students: 780, description: 'Install any floor type' }
+  { id: 1, title: 'React - The Complete Guide', instructor: 'Maximilian Schwarzmüller', image: getCourseImage({ title: 'React - The Complete Guide', category: 'coding' }), level: 'beginner', price: 89, duration: 52, category: 'coding', rating: 4.9, students: 125000, description: 'Master React.js including Hooks, Redux, React Router, and Next.js' },
+  { id: 2, title: 'JavaScript - Zero to Hero', instructor: 'Brad Traversy', image: getCourseImage({ title: 'JavaScript - Zero to Hero', category: 'web' }), level: 'beginner', price: 99, duration: 68, category: 'web', rating: 4.8, students: 98000, description: 'Complete JavaScript course from basics to advanced concepts' },
+  { id: 3, title: 'TypeScript Masterclass', instructor: 'Sarah Drasner', image: getCourseImage({ title: 'TypeScript Masterclass', category: 'coding' }), level: 'intermediate', price: 79, duration: 24, category: 'coding', rating: 4.7, students: 45000, description: 'Advanced TypeScript types, generics, and best practices' },
+  { id: 4, title: 'Node.js Backend Development', instructor: 'Maximilian Schwarzmüller', image: getCourseImage({ title: 'Node.js Backend Development', category: 'backend' }), level: 'intermediate', price: 119, duration: 42, category: 'backend', rating: 4.8, students: 67000, description: 'Build REST APIs with Node.js, Express, and MongoDB' },
+  { id: 5, title: 'React Native Mobile Apps', instructor: 'Brad Traversy', image: getCourseImage({ title: 'React Native Mobile Apps', category: 'mobile' }), level: 'advanced', price: 69, duration: 28, category: 'mobile', rating: 4.6, students: 32000, description: 'Build cross-platform mobile apps with React Native' },
+  { id: 6, title: 'Python for Web Development', instructor: 'Jose Portilla', image: getCourseImage({ title: 'Python for Web Development', category: 'backend' }), level: 'beginner', price: 59, duration: 35, category: 'web', rating: 4.8, students: 156000, description: 'Learn Python and Django for modern web development' }
 ]
 
 const categories = [
-  { name: 'coding', label: 'Electrical', icon: '⚡' },
-  { name: 'marketing', label: 'Plumbing', icon: '🔧' },
-  { name: 'design', label: 'HVAC', icon: '❄️' },
-  { name: 'business', label: 'Carpentry', icon: '🪵' }
+  { name: 'coding', label: 'Frontend', icon: '⚛️' },
+  { name: 'web', label: 'Web Dev', icon: '🌐' },
+  { name: 'mobile', label: 'Mobile', icon: '📱' },
+  { name: 'backend', label: 'Backend', icon: '🖥️' }
 ]
 
 const getLevelLabel = (level: Course['level']): string => {
@@ -213,51 +242,29 @@ export default function ExploreCourses() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-transparent py-16">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="p-4 bg-primary/20 rounded-2xl">
-              <Sparkles className="h-8 w-8 text-primary" />
+      <div className="max-w-[1400px] mx-auto px-4 pb-12">
+        {/* Header */}
+        <header className="pt-12 mb-12">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-3 bg-primary/10 rounded-2xl">
+              <BookOpen className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
                 Explore Courses
               </h1>
-              <p className="text-lg text-muted-foreground mt-1">
-                Discover your next skill and start learning today
-              </p>
             </div>
           </div>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Discover software development courses and start learning today
+          </p>
+        </header>
 
-          {/* Stats */}
-          <div className="flex flex-wrap gap-6 mt-8">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <BookOpen className="h-5 w-5 text-primary" />
-              <span className="font-semibold">{mockCourses.length}</span>
-              <span>Courses</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Users className="h-5 w-5 text-primary" />
-              <span className="font-semibold">{mockCourses.reduce((acc, c) => acc + (c.students || 0), 0).toLocaleString()}</span>
-              <span>Students</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Star className="h-5 w-5 text-amber-500" />
-              <span className="font-semibold">4.7</span>
-              <span>Avg Rating</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
 
           {/* Filters Sidebar */}
           <aside className="lg:w-80 lg:flex-shrink-0 lg:sticky lg:top-8">
-            <Card className="shadow-xl border-0 rounded-3xl overflow-hidden bg-card">
+            <Card className="shadow-xl border-0 rounded-2xl overflow-hidden bg-card">
               <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6">
                 <h2 className="text-2xl font-bold flex items-center gap-3 text-foreground">
                   <div className="p-2 bg-primary/20 rounded-xl">
@@ -347,10 +354,10 @@ export default function ExploreCourses() {
                     <Card
                       key={course.id}
                       className="group relative overflow-hidden rounded-2xl border-0 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer h-full bg-card"
-                      onClick={() => navigate(`/student/course/${course.id}`)}
+                      onClick={() => navigate(`/course/${course.id}`)}
                     >
                       {/* Image Section */}
-                      <div className="relative h-52 overflow-hidden">
+                      <div className="relative h-52 overflow-hidden rounded-t-2xl">
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
                         <img
                           src={course.image || getCategoryImage(course.category)}
@@ -430,7 +437,7 @@ export default function ExploreCourses() {
                           className="w-full mt-4 font-bold group-hover:scale-[1.02] transition-transform"
                           onClick={(e) => {
                             e.stopPropagation()
-                            navigate(`/student/course/${course.id}`)
+                            navigate(`/course/${course.id}`)
                           }}
                         >
                           <ShoppingCart className="h-4 w-4 mr-2" />
@@ -444,7 +451,7 @@ export default function ExploreCourses() {
               ) : (
                 <Card className="border-2 border-dashed border-muted bg-gradient-to-br from-muted/20 to-background">
                   <CardContent className="text-center py-20">
-                    <div className="w-28 h-28 mx-auto mb-6 bg-primary/10 rounded-3xl flex items-center justify-center">
+                    <div className="w-28 h-28 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center">
                       <Search className="h-14 w-14 text-primary" />
                     </div>
                     <h3 className="text-3xl font-black mb-4">No courses found</h3>

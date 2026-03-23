@@ -4,12 +4,26 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { useLocation } from "react-router-dom"
 
 type Props = {
   children: React.ReactNode
 }
 
 export default function Layout({ children }: Props) {
+  const location = useLocation()
+
+  // Hide sidebar for course player and quiz result
+  const isCoursePlayer = location.pathname.startsWith('/course/')
+
+  if (isCoursePlayer) {
+    return (
+      <div className="min-h-screen">
+        {children}
+      </div>
+    )
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
