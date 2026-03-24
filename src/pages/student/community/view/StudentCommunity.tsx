@@ -1,482 +1,535 @@
-import { useState } from 'react'
+import { useMemo, useState } from "react";
 import {
-  Search,
-  MessageCircle,
-  Heart,
   Eye,
+  Flame,
+  Heart,
+  MessageCircle,
+  MessageSquare,
+  MoreHorizontal,
+  Search,
+  Send,
   TrendingUp,
   Users,
-  Send,
-  MoreHorizontal,
-  MessageSquare
-} from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-// Types
 interface Post {
-  id: string
+  id: string;
   author: {
-    name: string
-    avatar?: string
-    badge: 'Student' | 'Instructor' | 'Moderator'
-  }
-  title: string
-  content: string
-  tags: string[]
-  likes: number
-  comments: number
-  views: number
-  timestamp: string
-  isLiked?: boolean
+    name: string;
+    avatar?: string;
+    badge: "Student" | "Instructor" | "Moderator";
+  };
+  title: string;
+  content: string;
+  tags: string[];
+  likes: number;
+  comments: number;
+  views: number;
+  timestamp: string;
+  isLiked?: boolean;
 }
 
 interface Topic {
-  name: string
-  count: number
-  isTrending?: boolean
+  name: string;
+  count: number;
+  isTrending?: boolean;
 }
 
-// Mock data
 const mockPosts: Post[] = [
   {
-    id: '1',
-    author: { name: 'Sarah Chen', badge: 'Student' },
-    title: 'How to handle state management in large React applications?',
-    content: 'I\'ve been working on a large React project and finding it difficult to manage state across multiple components. Should I use Redux, Context API, or something else? Looking for advice from developers with experience in scaling React apps.',
-    tags: ['React', 'State Management', 'Frontend'],
+    id: "1",
+    author: { name: "Sarah Chen", badge: "Student" },
+    title: "How to handle state management in large React applications?",
+    content:
+      "I've been working on a large React project and finding it difficult to manage state across multiple components. Should I use Redux, Context API, or something else? Looking for advice from developers with experience in scaling React apps.",
+    tags: ["React", "State Management", "Frontend"],
     likes: 24,
     comments: 12,
     views: 156,
-    timestamp: '2 hours ago'
+    timestamp: "2 hours ago",
   },
   {
-    id: '2',
-    author: { name: 'Alex Rivera', badge: 'Student' },
-    title: 'Best practices for REST API design',
-    content: 'I\'m building a backend API and wanted to know what everyone considers the best practices for REST API design. Things like naming conventions, error handling, versioning, etc.',
-    tags: ['API', 'Backend', 'Best Practices'],
+    id: "2",
+    author: { name: "Alex Rivera", badge: "Student" },
+    title: "Best practices for REST API design",
+    content:
+      "I'm building a backend API and wanted to know what everyone considers the best practices for REST API design. Things like naming conventions, error handling, versioning, and consistency patterns.",
+    tags: ["API", "Backend", "Best Practices"],
     likes: 18,
     comments: 8,
     views: 98,
-    timestamp: '4 hours ago'
+    timestamp: "4 hours ago",
   },
   {
-    id: '3',
-    author: { name: 'Dr. Emily Watson', badge: 'Instructor' },
-    title: 'Welcome to our new community! Here are some guidelines',
-    content: 'Hello everyone! I\'m excited to see this community grow. Let\'s keep our discussions focused on learning and helping each other. Feel free to ask questions and share your knowledge with fellow learners.',
-    tags: ['Announcement', 'Community'],
+    id: "3",
+    author: { name: "Dr. Emily Watson", badge: "Instructor" },
+    title: "Welcome to our new community! Here are some guidelines",
+    content:
+      "Hello everyone! I'm excited to see this community grow. Let's keep our discussions focused on learning and helping each other. Ask questions, share insights, and support fellow learners.",
+    tags: ["Announcement", "Community"],
     likes: 45,
     comments: 20,
     views: 320,
-    timestamp: '1 day ago'
+    timestamp: "1 day ago",
   },
   {
-    id: '4',
-    author: { name: 'James Miller', badge: 'Student' },
-    title: 'Tips for preparing for technical interviews?',
-    content: 'I have an upcoming interview with a tech company and wanted to know what resources and strategies helped others in this community. Any recommendations for coding practice and system design questions?',
-    tags: ['Career', 'Interview', 'Tips'],
+    id: "4",
+    author: { name: "James Miller", badge: "Student" },
+    title: "Tips for preparing for technical interviews?",
+    content:
+      "I have an upcoming interview with a tech company and wanted to know what resources and strategies helped others here. Any recommendations for coding practice, behavioral prep, and system design?",
+    tags: ["Career", "Interview", "Tips"],
     likes: 32,
     comments: 18,
     views: 245,
-    timestamp: '1 day ago'
+    timestamp: "1 day ago",
   },
   {
-    id: '5',
-    author: { name: 'Maria Garcia', badge: 'Student' },
-    title: 'Understanding Python async/await - A beginner\'s guide',
-    content: 'I recently learned about async/await in Python and wanted to share my understanding with the community. Here\'s a simple breakdown of how asynchronous programming works in Python.',
-    tags: ['Python', 'Async', 'Tutorial'],
+    id: "5",
+    author: { name: "Maria Garcia", badge: "Student" },
+    title: "Understanding Python async/await - A beginner's guide",
+    content:
+      "I recently learned about async/await in Python and wanted to share a simple breakdown of how asynchronous programming works. Posting my notes in case they help someone else too.",
+    tags: ["Python", "Async", "Tutorial"],
     likes: 56,
     comments: 14,
     views: 189,
-    timestamp: '2 days ago'
-  }
-]
+    timestamp: "2 days ago",
+  },
+];
 
 const trendingTopics: Topic[] = [
-  { name: 'React', count: 234, isTrending: true },
-  { name: 'JavaScript', count: 189 },
-  { name: 'Python', count: 156 },
-  { name: 'Data Science', count: 134, isTrending: true },
-  { name: 'UI/UX', count: 98 },
-  { name: 'Career', count: 87, isTrending: true },
-  { name: 'API', count: 76 },
-  { name: 'Machine Learning', count: 65 }
-]
+  { name: "React", count: 234, isTrending: true },
+  { name: "JavaScript", count: 189 },
+  { name: "Python", count: 156 },
+  { name: "Data Science", count: 134, isTrending: true },
+  { name: "UI/UX", count: 98 },
+  { name: "Career", count: 87, isTrending: true },
+  { name: "API", count: 76 },
+  { name: "Machine Learning", count: 65 },
+];
 
 const suggestedDiscussions = [
-  { title: 'Getting started with TypeScript', replies: 23 },
-  { title: 'React Hooks explained', replies: 18 },
-  { title: 'Building your first web app', replies: 15 },
-  { title: 'Database design tips', replies: 12 }
-]
+  { title: "Getting started with TypeScript", replies: 23 },
+  { title: "React Hooks explained", replies: 18 },
+  { title: "Building your first web app", replies: 15 },
+  { title: "Database design tips", replies: 12 },
+];
 
 const activeContributors = [
-  { name: 'Sarah Chen', posts: 12 },
-  { name: 'Alex Rivera', posts: 8 },
-  { name: 'Maria Garcia', posts: 6 },
-  { name: 'James Miller', posts: 5 }
-]
+  { name: "Sarah Chen", posts: 12 },
+  { name: "Alex Rivera", posts: 8 },
+  { name: "Maria Garcia", posts: 6 },
+  { name: "James Miller", posts: 5 },
+];
 
-// Filter tabs
-type FilterTab = 'all' | 'my-posts' | 'questions' | 'discussions'
+type FilterTab = "all" | "my-posts" | "questions" | "discussions";
+
 const filterTabs: { id: FilterTab; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'my-posts', label: 'My Posts' },
-  { id: 'questions', label: 'Questions' },
-  { id: 'discussions', label: 'Discussions' }
-]
+  { id: "all", label: "All" },
+  { id: "my-posts", label: "My Posts" },
+  { id: "questions", label: "Questions" },
+  { id: "discussions", label: "Discussions" },
+];
 
-// Badge color helper
-const getBadgeColor = (badge: Post['author']['badge']) => {
+const getBadgeColor = (badge: Post["author"]["badge"]) => {
   switch (badge) {
-    case 'Instructor': return 'bg-blue-500/10 text-blue-600 border-blue-200'
-    case 'Moderator': return 'bg-purple-500/10 text-purple-600 border-purple-200'
-    default: return 'bg-green-500/10 text-green-600 border-green-200'
+    case "Instructor":
+      return "bg-blue-50 text-blue-700 border-blue-200";
+    case "Moderator":
+      return "bg-purple-50 text-purple-700 border-purple-200";
+    default:
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
   }
-}
+};
 
 export default function StudentCommunity() {
-  const [activeTab, setActiveTab] = useState<FilterTab>('all')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [posts, setPosts] = useState<Post[]>(mockPosts)
-  const [newPostTitle, setNewPostTitle] = useState('')
-  const [newPostContent, setNewPostContent] = useState('')
-  const [selectedTag, setSelectedTag] = useState<string | null>(null)
-
-  const availableTags = ['React', 'JavaScript', 'Python', 'TypeScript', 'UI/UX', 'Backend', 'Career', 'Tutorial']
-
+  const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [newPostTitle, setNewPostTitle] = useState("");
+  const [newPostContent, setNewPostContent] = useState("");
   const handleLike = (postId: string) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return {
-          ...post,
-          likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-          isLiked: !post.isLiked
-        }
-      }
-      return post
-    }))
-  }
+    setPosts(
+      posts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+              isLiked: !post.isLiked,
+            }
+          : post
+      )
+    );
+  };
 
   const handlePostSubmit = () => {
-    if (!newPostTitle.trim() || !newPostContent.trim()) return
+    if (!newPostTitle.trim() || !newPostContent.trim()) return;
 
     const newPost: Post = {
       id: Date.now().toString(),
-      author: { name: 'You', badge: 'Student' },
+      author: { name: "You", badge: "Student" },
       title: newPostTitle,
       content: newPostContent,
-      tags: selectedTag ? [selectedTag] : [],
+      tags: [],
       likes: 0,
       comments: 0,
       views: 0,
-      timestamp: 'Just now'
-    }
+      timestamp: "Just now",
+    };
 
-    setPosts([newPost, ...posts])
-    setNewPostTitle('')
-    setNewPostContent('')
-    setSelectedTag(null)
-  }
+    setPosts([newPost, ...posts]);
+    setNewPostTitle("");
+    setNewPostContent("");
+  };
 
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = searchTerm === '' ||
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.content.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const matchesSearch =
+        searchTerm === "" ||
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchTerm.toLowerCase());
 
-    if (!matchesSearch) return false
+      if (!matchesSearch) return false;
 
-    switch (activeTab) {
-      case 'questions':
-        return post.title.toLowerCase().includes('how') ||
-          post.title.toLowerCase().includes('?')
-      case 'discussions':
-        return !post.title.toLowerCase().includes('how')
-      default:
-        return true
-    }
-  })
+      switch (activeTab) {
+        case "questions":
+          return (
+            post.title.toLowerCase().includes("how") || post.title.toLowerCase().includes("?")
+          );
+        case "discussions":
+          return !post.title.toLowerCase().includes("how");
+        default:
+          return true;
+      }
+    });
+  }, [posts, searchTerm, activeTab]);
+
+  const totalEngagement = useMemo(
+    () => posts.reduce((sum, post) => sum + post.likes + post.comments, 0),
+    [posts]
+  );
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto pl-1 py-4">
-
-        {/* Header */}
-        <header className="mb-12">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-3 bg-primary/10 rounded-2xl">
-              <MessageCircle className="h-8 w-8 text-primary" />
+      <div className="app-page-shell">
+        <div className="space-y-6">
+          <header className="space-y-3">
+            <div className="app-page-heading">
+              <MessageCircle className="app-page-title-icon" />
+              <h1 className="app-page-title">Community</h1>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Community
-              </h1>
-            </div>
-          </div>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Ask questions, share ideas, and learn together
-          </p>
-        </header>
+            <p className="max-w-2xl text-base text-slate-600 dark:text-zinc-300">
+              Ask questions, share ideas, and learn alongside other students and instructors
+              in one focused learning space.
+            </p>
+          </header>
 
-        {/* Filter Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {filterTabs.map(tab => (
-            <Button
-              key={tab.id}
-              variant={activeTab === tab.id ? 'default' : 'ghost'}
-              onClick={() => setActiveTab(tab.id)}
-              className={`rounded-lg px-4 ${activeTab === tab.id
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
-            >
-              {tab.label}
-            </Button>
-          ))}
-        </div>
+          <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr]">
+            <main className="space-y-6">
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="space-y-5 p-5 md:p-6">
+                  <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                    <div className="space-y-1">
+                      <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                        Start a Discussion
+                      </h2>
+                      <p className="text-sm text-slate-600 dark:text-zinc-400">
+                        Ask for help, share a resource, or start a focused learning conversation.
+                      </p>
+                    </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="flex w-full flex-col gap-3 lg:flex-row xl:max-w-[540px]">
+                      <div className="relative flex-1">
+                        <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          placeholder="Search discussions, tags, or topics"
+                          className="h-11 rounded-2xl border-slate-200 bg-white pl-11 shadow-none dark:border-zinc-700 dark:bg-zinc-950"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                      </div>
 
-          {/* Main Content - Left Column */}
-          <main className="flex-1 min-w-0">
-
-            {/* Create Post Card */}
-            <Card className="mb-6 border-border/50 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src="/src/assets/react.svg" />
-                    <AvatarFallback>Y</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 space-y-3">
-                    <Input
-                      placeholder="Ask a question or share something..."
-                      value={newPostTitle}
-                      onChange={(e) => setNewPostTitle(e.target.value)}
-                      className="font-medium"
-                    />
-                    <textarea
-                      placeholder="Describe your question or idea..."
-                      value={newPostContent}
-                      onChange={(e) => setNewPostContent(e.target.value)}
-                      className="w-full min-h-[80px] p-3 rounded-lg border bg-muted/50 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
-                    />
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex flex-wrap gap-2">
-                        {availableTags.slice(0, 4).map(tag => (
-                          <Badge
-                            key={tag}
-                            variant={selectedTag === tag ? 'default' : 'outline'}
-                            className={`cursor-pointer text-xs ${selectedTag === tag
-                              ? 'bg-primary'
-                              : 'hover:bg-muted'
-                              }`}
-                            onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {filterTabs.map((tab) => (
+                          <Button
+                            key={tab.id}
+                            variant={activeTab === tab.id ? "default" : "outline"}
+                            onClick={() => setActiveTab(tab.id)}
+                            className="rounded-full px-4"
                           >
-                            {tag}
-                          </Badge>
+                            {tab.label}
+                          </Button>
                         ))}
                       </div>
-                      <Button
-                        size="sm"
-                        onClick={handlePostSubmit}
-                        disabled={!newPostTitle.trim() || !newPostContent.trim()}
-                        className="gap-2"
-                      >
-                        <Send className="h-4 w-4" />
-                        Post
-                      </Button>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Post List */}
-            <div className="space-y-4">
-              {filteredPosts.map(post => (
-                <Card
-                  key={post.id}
-                  className="border-border/50 shadow-sm hover:shadow-md transition-all duration-200"
-                >
-                  <CardContent className="p-5">
-                    {/* Author Info */}
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-muted">
-                            {post.author.name.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium text-sm">{post.author.name}</span>
-                            <Badge
-                              variant="outline"
-                              className={`text-xs ${getBadgeColor(post.author.badge)}`}
-                            >
-                              {post.author.badge}
-                            </Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{post.timestamp}</span>
+                  <div className="rounded-[26px] border border-slate-200 bg-slate-50/80 p-4 dark:border-zinc-700 dark:bg-zinc-800/40 md:p-5">
+                    <div className="flex flex-col gap-4 md:flex-row">
+                      <Avatar className="h-12 w-12 border border-slate-200 dark:border-zinc-700">
+                        <AvatarImage src="/src/assets/react.svg" />
+                        <AvatarFallback>Y</AvatarFallback>
+                      </Avatar>
+
+                      <div className="flex-1 space-y-3">
+                        <Input
+                          placeholder="What would you like to ask or share?"
+                          value={newPostTitle}
+                          onChange={(e) => setNewPostTitle(e.target.value)}
+                          className="h-11 rounded-2xl border-slate-200 bg-white font-medium shadow-none dark:border-zinc-700 dark:bg-zinc-950"
+                        />
+                        <textarea
+                          placeholder="Add details, context, or your learning challenge to help others respond better..."
+                          value={newPostContent}
+                          onChange={(e) => setNewPostContent(e.target.value)}
+                          className="min-h-[120px] w-full resize-none rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-6 shadow-none outline-none transition-colors focus:border-primary dark:border-zinc-700 dark:bg-zinc-950"
+                        />
+
+                        <div className="flex justify-end">
+                          <Button
+                            onClick={handlePostSubmit}
+                            disabled={!newPostTitle.trim() || !newPostContent.trim()}
+                            className="h-11 rounded-2xl px-5 font-semibold"
+                          >
+                            <Send className="mr-2 h-4 w-4" />
+                            Publish Post
+                          </Button>
                         </div>
                       </div>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-                      </Button>
                     </div>
-
-                    {/* Post Content */}
-                    <h3 className="font-semibold text-lg mb-2 hover:text-primary cursor-pointer">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                      {post.content}
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {post.tags.map(tag => (
-                        <Badge
-                          key={tag}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    {/* Interactions */}
-                    <div className="flex items-center gap-6 pt-3 border-t">
-                      <button
-                        className={`flex items-center gap-1.5 text-sm transition-colors ${post.isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-foreground'
-                          }`}
-                        onClick={() => handleLike(post.id)}
-                      >
-                        <Heart className={`h-4 w-4 ${post.isLiked ? 'fill-current' : ''}`} />
-                        <span>{post.likes}</span>
-                      </button>
-                      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                        <MessageSquare className="h-4 w-4" />
-                        <span>{post.comments}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                        <Eye className="h-4 w-4" />
-                        <span>{post.views}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* Empty State */}
-            {filteredPosts.length === 0 && (
-              <Card className="border-dashed">
-                <CardContent className="text-center py-12">
-                  <MessageCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="font-semibold mb-2">No discussions found</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Try adjusting your search or filters
-                  </p>
+                  </div>
                 </CardContent>
               </Card>
-            )}
-          </main>
 
-          {/* Sidebar - Right Column */}
-          <aside className="lg:w-80 space-y-6">
-
-            {/* Trending Topics */}
-            <Card className="border-border/50 shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  Trending Topics
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex flex-wrap gap-2">
-                  {trendingTopics.map(topic => (
-                    <Badge
-                      key={topic.name}
-                      variant="outline"
-                      className={`cursor-pointer hover:bg-muted transition-colors ${topic.isTrending ? 'bg-primary/5 border-primary/30' : ''
-                        }`}
-                    >
-                      {topic.isTrending && <TrendingUp className="h-3 w-3 mr-1" />}
-                      {topic.name}
-                      <span className="ml-1 text-muted-foreground">({topic.count})</span>
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Suggested Discussions */}
-            <Card className="border-border/50 shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4 text-primary" />
-                  Suggested
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0 space-y-3">
-                {suggestedDiscussions.map((discussion, index) => (
-                  <div
-                    key={index}
-                    className="group cursor-pointer p-2 rounded-lg hover:bg-muted/50 transition-colors"
-                  >
-                    <h4 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-1">
-                      {discussion.title}
-                    </h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {discussion.replies} replies
+              <section className="space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                      Latest Discussions
+                    </h2>
+                    <p className="text-sm text-slate-600 dark:text-zinc-400">
+                      {filteredPosts.length} conversations matched your current view.
                     </p>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                </div>
 
-            {/* Active Contributors */}
-            <Card className="border-border/50 shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Users className="h-4 w-4 text-primary" />
-                  Top Contributors
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0 space-y-3">
-                {activeContributors.map((contributor, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3"
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="text-xs bg-muted">
-                        {contributor.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{contributor.name}</p>
-                      <p className="text-xs text-muted-foreground">{contributor.posts} posts</p>
-                    </div>
+                <div className="space-y-4">
+                  {filteredPosts.map((post) => (
+                    <Card
+                      key={post.id}
+                      className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900"
+                    >
+                      <CardContent className="space-y-4 p-5 md:p-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <Avatar className="h-11 w-11 border border-slate-200 dark:border-zinc-700">
+                              <AvatarFallback className="bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-zinc-200">
+                                {post.author.name.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="font-medium text-slate-900 dark:text-white">
+                                  {post.author.name}
+                                </span>
+                                <Badge
+                                  variant="outline"
+                                  className={`rounded-full text-xs ${getBadgeColor(post.author.badge)}`}
+                                >
+                                  {post.author.badge}
+                                </Badge>
+                              </div>
+                              <span className="text-xs text-slate-500 dark:text-zinc-400">
+                                {post.timestamp}
+                              </span>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                        </div>
+
+                        <div className="space-y-3">
+                          <h3 className="text-lg font-semibold leading-snug text-slate-900 transition-colors hover:text-primary dark:text-white">
+                            {post.title}
+                          </h3>
+                          <p className="text-sm leading-6 text-slate-600 dark:text-zinc-400">
+                            {post.content}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {post.tags.map((tag) => (
+                            <Badge key={tag} variant="outline" className="rounded-full px-3 py-1">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-6 border-t border-slate-200 pt-4 text-sm dark:border-zinc-700">
+                          <button
+                            className={`inline-flex items-center gap-2 transition-colors ${
+                              post.isLiked
+                                ? "text-rose-500"
+                                : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white"
+                            }`}
+                            onClick={() => handleLike(post.id)}
+                          >
+                            <Heart
+                              className={`h-4 w-4 ${post.isLiked ? "fill-current" : ""}`}
+                            />
+                            {post.likes}
+                          </button>
+                          <div className="inline-flex items-center gap-2 text-slate-600 dark:text-zinc-400">
+                            <MessageSquare className="h-4 w-4" />
+                            {post.comments}
+                          </div>
+                          <div className="inline-flex items-center gap-2 text-slate-600 dark:text-zinc-400">
+                            <Eye className="h-4 w-4" />
+                            {post.views}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {filteredPosts.length === 0 && (
+                  <Card className="gap-0 rounded-3xl border border-dashed border-slate-300 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                    <CardContent className="space-y-5 p-10 text-center">
+                      <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-primary/10">
+                        <MessageCircle className="h-10 w-10 text-primary" />
+                      </div>
+                      <div className="space-y-2">
+                        <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                          No discussions found
+                        </h3>
+                        <p className="text-base text-slate-600 dark:text-zinc-400">
+                          Try adjusting your search or switch to a different tab.
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </section>
+            </main>
+
+            <aside className="space-y-6 xl:sticky xl:top-6 xl:self-start">
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="space-y-4 p-5">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/40">
+                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-zinc-400">
+                      Community Pulse
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">
+                      {totalEngagement}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-zinc-400">
+                      Total likes and replies across current posts
+                    </p>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
 
-          </aside>
+                  <div className="flex items-center gap-2">
+                    <Flame className="h-5 w-5 text-primary" />
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                      Trending Topics
+                    </h2>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {trendingTopics.map((topic) => (
+                      <Badge
+                        key={topic.name}
+                        variant="outline"
+                        className={`rounded-full px-3 py-1 ${
+                          topic.isTrending ? "border-primary/30 bg-primary/5" : ""
+                        }`}
+                      >
+                        {topic.isTrending && <TrendingUp className="mr-1 h-3 w-3" />}
+                        {topic.name} ({topic.count})
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="space-y-4 p-5">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5 text-primary" />
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                      Suggested Discussions
+                    </h2>
+                  </div>
+
+                  <div className="space-y-3">
+                    {suggestedDiscussions.map((discussion) => (
+                      <div
+                        key={discussion.title}
+                        className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100 dark:border-zinc-700 dark:bg-zinc-800/40 dark:hover:bg-zinc-800"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="font-medium text-slate-900 dark:text-white">
+                              {discussion.title}
+                            </p>
+                            <p className="mt-1 text-sm text-slate-600 dark:text-zinc-400">
+                              Suggested for your learning interests
+                            </p>
+                          </div>
+                          <Badge className="rounded-full bg-slate-900 px-2.5 py-1 text-white hover:bg-slate-900 dark:bg-white dark:text-slate-900 dark:hover:bg-white">
+                            {discussion.replies}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="space-y-4 p-5">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                      Top Contributors
+                    </h2>
+                  </div>
+
+                  <div className="space-y-3">
+                    {activeContributors.map((contributor) => (
+                      <div
+                        key={contributor.name}
+                        className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-zinc-700 dark:bg-zinc-800/40"
+                      >
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback className="bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-zinc-200">
+                            {contributor.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-slate-900 dark:text-white">
+                            {contributor.name}
+                          </p>
+                          <p className="text-sm text-slate-600 dark:text-zinc-400">
+                            {contributor.posts} posts
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </aside>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

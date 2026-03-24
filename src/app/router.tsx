@@ -10,14 +10,21 @@ import ExploreCourses from "@/pages/student/explore-courses/ExploreCourses";
 import { AdminDashboard } from "@/pages/admin/dashboard/view/AdminDashboard";
 import AdminStudents from "@/pages/admin/students/view/AdminStudents";
 import AdminStudentDetail from "@/pages/admin/students/view/AdminStudentDetail";
+import StudentCourseDetail from "@/pages/admin/students/view/StudentCourseDetail";
+import InstructorsList from "@/pages/admin/instructor/view/InstructorsList";
+import InstructorDetail from "@/pages/admin/instructor/view/InstructorDetail";
+import CoursesList from "@/pages/admin/course/view/CoursesList";
+import CourseDetail from "@/pages/admin/course/view/CourseDetail";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
 import InstructorMyCourses from "@/pages/instructor/my-courses/view/MyCourses";
 import Analytics from "@/pages/instructor/Analytics/view/Analytics";
 import Settings from "@/pages/instructor/settings/view/Settings";
+import SettingsPage from "@/pages/admin/settings/view/SettingsPage";
 import CoursePlayer from "@/pages/course/view/CoursePlayer";
 import QuizResultView from "@/pages/course/view/QuizResultView";
 import QuizStartView from "@/pages/course/view/QuizStartView";
 import NotFound from "@/pages/NotFound";
+import ReportsDashboard from "@/pages/admin/reports/view/ReportsDashboard";
 
 // Removed broken course imports
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -169,6 +176,62 @@ export const appRoutes: RouteObject[] = [
             element: (
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AdminStudentDetail />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "students/:studentId/courses/:courseId",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <StudentCourseDetail />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "instructors",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <InstructorsList />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "instructors/:instructorId",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <InstructorDetail />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "courses",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <CoursesList />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "courses/:courseId",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <CourseDetail />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "settings",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <SettingsPage />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "reports",
+            element: (
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <ReportsDashboard />
               </ProtectedRoute>
             ),
           },

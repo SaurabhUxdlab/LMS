@@ -7,7 +7,6 @@ import {
   Command,
   GalleryVerticalEnd,
   LayoutDashboard,
-  Wrench,
   Settings,
   LogOut,
   FileText,
@@ -265,10 +264,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         >
           <div className="relative">
             <motion.div
-              whileHover={{ rotate: 45 }}
+              whileHover={{ scale: 1.08 }}
               transition={{ type: "spring", stiffness: 200, damping: 15 }}
             >
-              <Wrench className="h-7 w-7 text-white transition-transform sm:h-8 sm:w-8 bg-primary p-1 rounded-full" />
+              <BookOpen className="h-7 w-7 text-white transition-transform sm:h-8 sm:w-8 bg-primary p-1 rounded-full" />
             </motion.div>
           </div>
           {state !== "collapsed" && (

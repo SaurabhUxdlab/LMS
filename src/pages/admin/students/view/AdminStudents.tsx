@@ -13,15 +13,12 @@ import {
   Eye,
   Edit,
   ChevronDown,
-  ChevronRight,
   Calendar,
-  Mail,
-  BookOpen,
   Clock,
   CheckCircle2,
   XCircle
 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -220,7 +217,6 @@ const summaryStats = [
 export default function AdminStudents() {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
-  const [expandedRows, setExpandedRows] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCourse, setSelectedCourse] = useState('all')
   const studentsPerPage = 5
@@ -238,25 +234,19 @@ export default function AdminStudents() {
     currentPage * studentsPerPage
   )
 
-  // Toggle row expansion
-  const toggleRow = (id: string) => {
-    setExpandedRows(prev => 
-      prev.includes(id) 
-        ? prev.filter(rowId => rowId !== id)
-        : [...prev, id]
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-8">
-      <div className="max-w-[1600px] mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="app-page-shell">
         {/* Top Header Section */}
-        <header className="mb-8">
+        <header className="app-page-header">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
-                Student Management
-              </h1>
+              <div className="app-page-heading">
+                <Users className="app-page-title-icon" />
+                <h1 className="app-page-title text-black">
+                  Student Management
+                </h1>
+              </div>
               <p className="text-lg text-muted-foreground mt-1">
                 Track, filter, and manage student progress
               </p>
@@ -277,16 +267,16 @@ export default function AdminStudents() {
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {summaryStats.map((stat, index) => (
-            <Card key={index} className="border-0 shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground font-medium">{stat.title}</p>
-                    <p className="text-3xl font-black mt-1">{stat.value}</p>
-                    <p className="text-sm font-medium text-green-600 mt-1">{stat.change} from last month</p>
+            <Card key={index} className="app-kpi-card">
+              <CardContent className="app-kpi-content">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="app-kpi-label">{stat.title}</p>
+                    <p className="app-kpi-value mt-1">{stat.value}</p>
+                    <p className="app-kpi-subtext text-green-600">{stat.change} from last month</p>
                   </div>
-                  <div className={`p-4 rounded-2xl ${stat.bgColor}`}>
-                    <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                  <div className={`app-kpi-icon-wrap ${stat.bgColor} border-0`}>
+                    <stat.icon className={`h-5 w-5 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -361,14 +351,19 @@ export default function AdminStudents() {
                   <TableRow 
                     key={student.id} 
                     className="hover:bg-muted/50 cursor-pointer"
-                    onClick={() => toggleRow(student.id)}
+                    onClick={() => navigate(`/admin/students/${student.id}`)}
                   >
                     <TableCell>
-                      {expandedRows.includes(student.id) ? (
-                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          navigate(`/admin/students/${student.id}`)
+                        }}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -435,44 +430,6 @@ export default function AdminStudents() {
                       </div>
                     </TableCell>
                   </TableRow>
-                  {/* Expanded Course Details */}
-                  {expandedRows.includes(student.id) && (
-                    <TableRow className="hover:bg-muted/50">
-                      <TableCell colSpan={7} className="p-0">
-                        <div className="bg-muted/20 p-6">
-                          <p className="font-semibold mb-4 flex items-center gap-2">
-                            <BookOpen className="h-4 w-4" />
-                            Enrolled Courses ({student.courses.length})
-                          </p>
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {student.courses.map((course, idx) => (
-                              <Card key={idx} className="border border-gray-200 shadow-sm">
-                                <CardContent className="p-4">
-                                  <div className="flex items-start justify-between mb-3">
-                                    <p className="font-semibold text-sm line-clamp-1">{course.name}</p>
-                                    <Badge variant="outline" className="text-xs">
-                                      {course.quizAverage}% Quiz Avg
-                                    </Badge>
-                                  </div>
-                                  <div className="space-y-2">
-                                    <div className="flex items-center justify-between text-sm">
-                                      <span className="text-muted-foreground">Lessons</span>
-                                      <span className="font-medium">{course.lessonsCompleted}/{course.totalLessons}</span>
-                                    </div>
-                                    <Progress value={course.progress} className="h-1.5" />
-                                    <div className="flex items-center justify-between text-sm">
-                                      <span className="text-muted-foreground">Progress</span>
-                                      <span className="font-medium">{course.progress}%</span>
-                                    </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            ))}
-                          </div>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  )}
                 </>
               ))}
             </TableBody>

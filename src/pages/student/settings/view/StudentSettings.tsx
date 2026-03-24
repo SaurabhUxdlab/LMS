@@ -7,7 +7,6 @@ import {
   Shield,
   Save,
   Camera,
-  Mail,
   CheckCircle2
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -44,12 +43,34 @@ const mockUser = {
   email: 'sarah.chen@example.com',
   phone: '+1 (555) 123-4567',
   bio: 'Passionate learner exploring web development and data science. Always looking to expand my skills!',
-  avatar: '/src/assets/react.svg',
   username: 'sarah_chen',
   membership: 'Premium' as const,
   language: 'en',
   timezone: 'America/New_York',
   theme: 'light' as const,
+}
+
+const sectionMeta: Record<SettingsSection, { title: string; description: string }> = {
+  profile: {
+    title: 'Profile Settings',
+    description: 'Manage your personal details and how you appear to other learners.',
+  },
+  account: {
+    title: 'Account Settings',
+    description: 'Review your account information, plan details, and sign-in identity.',
+  },
+  notifications: {
+    title: 'Notification Preferences',
+    description: 'Choose which updates you want to receive while learning on the platform.',
+  },
+  preferences: {
+    title: 'Preferences',
+    description: 'Customize language, timezone, and display settings for your workspace.',
+  },
+  security: {
+    title: 'Security Settings',
+    description: 'Protect your account with better password and authentication controls.',
+  },
 }
 
 export default function StudentSettings() {
@@ -94,75 +115,87 @@ export default function StudentSettings() {
       case 'profile':
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Profile Settings</h2>
-              <p className="text-sm text-muted-foreground mt-1">Manage your personal information</p>
+            <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="space-y-4 p-6 text-center">
+                  <div className="relative mx-auto w-fit">
+                    <Avatar className="h-24 w-24 border border-slate-200 dark:border-zinc-700">
+                      <AvatarFallback className="bg-slate-100 text-2xl font-semibold text-slate-700 dark:bg-zinc-800 dark:text-zinc-100">
+                        SC
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full"
+                    >
+                      <Camera className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-lg font-semibold text-slate-900 dark:text-white">{profile.name}</p>
+                    <p className="text-sm text-slate-600 dark:text-zinc-400">{mockUser.email}</p>
+                  </div>
+                  <Badge className="mx-auto rounded-full bg-primary/10 px-3 py-1 text-primary hover:bg-primary/10">
+                    {mockUser.membership} Member
+                  </Badge>
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left dark:border-zinc-700 dark:bg-zinc-800/40">
+                    <p className="text-sm font-medium text-slate-900 dark:text-white">Profile Picture</p>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-zinc-400">
+                      JPG, PNG or GIF. Recommended size 400x400. Max 2MB.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="p-6">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={profile.name}
+                        onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                        className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={profile.email}
+                        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                        className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
+                      />
+                    </div>
+                    <div className="grid gap-2 md:col-span-2">
+                      <Label htmlFor="phone">Phone (optional)</Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        value={profile.phone}
+                        onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                        className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
+                      />
+                    </div>
+                    <div className="grid gap-2 md:col-span-2">
+                      <Label htmlFor="bio">Bio</Label>
+                      <Textarea
+                        id="bio"
+                        value={profile.bio}
+                        onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                        className="min-h-[120px] rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
+                        placeholder="Tell us about yourself..."
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Avatar */}
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src={mockUser.avatar} />
-                  <AvatarFallback className="text-2xl">SC</AvatarFallback>
-                </Avatar>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full"
-                >
-                  <Camera className="h-4 w-4" />
-                </Button>
-              </div>
-              <div>
-                <p className="font-medium">Profile Picture</p>
-                <p className="text-sm text-muted-foreground">JPG, PNG or GIF. Max 2MB.</p>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Form Fields */}
-            <div className="grid gap-4 max-w-md">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  value={profile.name}
-                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={profile.email}
-                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="phone">Phone (optional)</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={profile.phone}
-                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="bio">Bio</Label>
-                <Textarea
-                  id="bio"
-                  value={profile.bio}
-                  onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                  className="min-h-[100px]"
-                  placeholder="Tell us about yourself..."
-                />
-              </div>
-            </div>
-
-            <Button onClick={handleSave} className="gap-2">
+            <Button onClick={handleSave} className="h-11 rounded-2xl px-5 gap-2 w-fit">
               <Save className="h-4 w-4" />
               Save Changes
             </Button>
@@ -172,12 +205,7 @@ export default function StudentSettings() {
       case 'account':
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Account Settings</h2>
-              <p className="text-sm text-muted-foreground mt-1">Manage your account details</p>
-            </div>
-
-            <Card className="border-border/50">
+            <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between py-2">
@@ -192,7 +220,7 @@ export default function StudentSettings() {
                       <p className="font-medium">Email</p>
                       <p className="text-sm text-muted-foreground">{mockUser.email}</p>
                     </div>
-                    <Button variant="outline" size="sm">Change</Button>
+                    <Button variant="outline" size="sm" className="rounded-xl">Change</Button>
                   </div>
                   <Separator />
                   <div className="flex items-center justify-between py-2">
@@ -200,7 +228,7 @@ export default function StudentSettings() {
                       <p className="font-medium">Membership</p>
                       <p className="text-sm text-muted-foreground">Current plan</p>
                     </div>
-                    <Badge className="bg-primary/10 text-primary border-primary/30">
+                    <Badge className="rounded-full border-primary/30 bg-primary/10 text-primary">
                       {mockUser.membership}
                     </Badge>
                   </div>
@@ -213,12 +241,7 @@ export default function StudentSettings() {
       case 'notifications':
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Notification Preferences</h2>
-              <p className="text-sm text-muted-foreground mt-1">Choose how you want to be notified</p>
-            </div>
-
-            <Card className="border-border/50">
+            <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
               <CardContent className="p-6">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
@@ -268,7 +291,7 @@ export default function StudentSettings() {
               </CardContent>
             </Card>
 
-            <Button onClick={handleSave} className="gap-2">
+            <Button onClick={handleSave} className="h-11 rounded-2xl px-5 gap-2 w-fit">
               <Save className="h-4 w-4" />
               Save Changes
             </Button>
@@ -278,12 +301,7 @@ export default function StudentSettings() {
       case 'preferences':
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Preferences</h2>
-              <p className="text-sm text-muted-foreground mt-1">Customize your experience</p>
-            </div>
-
-            <Card className="border-border/50">
+            <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
               <CardContent className="p-6">
                 <div className="space-y-6">
                   <div className="grid gap-2">
@@ -292,7 +310,7 @@ export default function StudentSettings() {
                       value={preferences.language}
                       onValueChange={(value) => setPreferences({ ...preferences, language: value })}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -311,7 +329,7 @@ export default function StudentSettings() {
                       value={preferences.timezone}
                       onValueChange={(value) => setPreferences({ ...preferences, timezone: value })}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -339,7 +357,7 @@ export default function StudentSettings() {
               </CardContent>
             </Card>
 
-            <Button onClick={handleSave} className="gap-2">
+            <Button onClick={handleSave} className="h-11 rounded-2xl px-5 gap-2 w-fit">
               <Save className="h-4 w-4" />
               Save Changes
             </Button>
@@ -349,12 +367,7 @@ export default function StudentSettings() {
       case 'security':
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold">Security Settings</h2>
-              <p className="text-sm text-muted-foreground mt-1">Protect your account</p>
-            </div>
-
-            <Card className="border-border/50">
+            <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
               <CardHeader>
                 <CardTitle className="text-base">Change Password</CardTitle>
                 <CardDescription>Update your password regularly to keep your account secure</CardDescription>
@@ -367,6 +380,7 @@ export default function StudentSettings() {
                     type="password"
                     value={security.currentPassword}
                     onChange={(e) => setSecurity({ ...security, currentPassword: e.target.value })}
+                    className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -376,6 +390,7 @@ export default function StudentSettings() {
                     type="password"
                     value={security.newPassword}
                     onChange={(e) => setSecurity({ ...security, newPassword: e.target.value })}
+                    className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -385,16 +400,17 @@ export default function StudentSettings() {
                     type="password"
                     value={security.confirmPassword}
                     onChange={(e) => setSecurity({ ...security, confirmPassword: e.target.value })}
+                    className="h-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700"
                   />
                 </div>
-                <Button className="gap-2">
+                <Button className="h-11 rounded-2xl px-5 gap-2 w-fit">
                   <Shield className="h-4 w-4" />
                   Update Password
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50">
+            <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
               <CardHeader>
                 <CardTitle className="text-base">Two-Factor Authentication</CardTitle>
                 <CardDescription>Add an extra layer of security to your account</CardDescription>
@@ -422,13 +438,11 @@ export default function StudentSettings() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto pl-1 py-4">
-
-        {/* Success Message */}
+      <div className="app-page-shell">
         {showSuccess && (
           <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-top-2">
-            <Card className="border-green-200 bg-green-50 shadow-lg">
-              <CardContent className="p-4 flex items-center gap-3">
+            <Card className="border-green-200 bg-green-50 shadow-lg dark:border-green-900 dark:bg-green-950">
+              <CardContent className="flex items-center gap-3 p-4">
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                 <span className="text-green-800 font-medium">Settings saved successfully!</span>
               </CardContent>
@@ -436,39 +450,65 @@ export default function StudentSettings() {
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-8">
-
-          {/* Left Sidebar - Settings Navigation */}
-          <aside className="lg:w-64 flex-shrink-0">
-            <Card className="border-border/50 shadow-sm">
-              <CardContent className="p-4">
-                <nav className="space-y-1">
-                  {settingsNav.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveSection(item.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeSection === item.id
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                        }`}
-                    >
-                      {item.icon}
-                      {item.label}
-                    </button>
-                  ))}
-                </nav>
-              </CardContent>
-            </Card>
-          </aside>
-
-          {/* Right Content - Settings Details - Full Width */}
-          <main className="flex-1 min-w-0">
-            <div className="bg-card rounded-xl border border-border/50 shadow-sm">
-              <div className="p-6">
-                {renderSection()}
-              </div>
+        <div className="space-y-6">
+          <header className="space-y-3">
+            <div className="app-page-heading">
+              <Settings className="app-page-title-icon" />
+              <h1 className="app-page-title">Settings</h1>
             </div>
-          </main>
+            <p className="max-w-2xl text-base text-slate-600 dark:text-zinc-300">
+              Manage your profile, notifications, preferences, and security from one clean workspace.
+            </p>
+          </header>
+
+          <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
+            <aside className="space-y-4 xl:sticky xl:top-6 xl:self-start">
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardContent className="space-y-4 p-5">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/40">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{mockUser.name}</p>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-zinc-400">{mockUser.email}</p>
+                    <Badge className="mt-3 rounded-full bg-primary/10 px-3 py-1 text-primary hover:bg-primary/10">
+                      {mockUser.membership} Plan
+                    </Badge>
+                  </div>
+
+                  <nav className="space-y-1">
+                    {settingsNav.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveSection(item.id)}
+                        className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition-colors ${
+                          activeSection === item.id
+                            ? 'bg-primary text-white'
+                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        }`}
+                      >
+                        {item.icon}
+                        {item.label}
+                      </button>
+                    ))}
+                  </nav>
+                </CardContent>
+              </Card>
+            </aside>
+
+            <main className="min-w-0">
+              <Card className="gap-0 rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <CardHeader className="border-b border-slate-200 px-6 py-5 dark:border-zinc-800">
+                  <CardTitle className="text-xl text-slate-900 dark:text-white">
+                    {sectionMeta[activeSection].title}
+                  </CardTitle>
+                  <CardDescription className="text-sm text-slate-600 dark:text-zinc-400">
+                    {sectionMeta[activeSection].description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {renderSection()}
+                </CardContent>
+              </Card>
+            </main>
+          </div>
         </div>
       </div>
     </div>

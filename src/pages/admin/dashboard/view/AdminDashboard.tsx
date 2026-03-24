@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, BookOpen, BarChart3, Settings } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, BarChart3, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAdminDashboardViewModel } from "../viewmodel/AdminDashboardViewModel";
 
@@ -23,57 +23,76 @@ export const AdminDashboard = () => {
 
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-zinc-950">
-            <div className="mx-auto pl-1 py-4">
+            <div className="app-page-shell">
                 <div className="space-y-8">
                     {/* Header */}
-                    <div className="flex flex-col gap-1">
-                        <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+                    <div className="app-page-header flex flex-col gap-1">
+                        <div className="app-page-heading">
+                            <LayoutDashboard className="app-page-title-icon" />
+                            <h1 className="app-page-title">Admin Dashboard</h1>
+                        </div>
                         <p className="text-muted-foreground">Welcome back, Admin</p>
                     </div>
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-                                <Users className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.totalStudents.toLocaleString()}</div>
-                                <p className="text-xs text-muted-foreground mt-1">Active students</p>
+                        <Card className="app-kpi-card">
+                            <CardContent className="app-kpi-content">
+                                <div className="app-kpi-row">
+                                    <div className="app-kpi-icon-wrap">
+                                        <Users className="h-5 w-5 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <p className="app-kpi-label">Total Students</p>
+                                        <div className="app-kpi-value">{stats.totalStudents.toLocaleString()}</div>
+                                        <p className="app-kpi-subtext">Active students</p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
 
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Instructors</CardTitle>
-                                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.totalInstructors.toLocaleString()}</div>
-                                <p className="text-xs text-muted-foreground mt-1">Active instructors</p>
+                        <Card className="app-kpi-card">
+                            <CardContent className="app-kpi-content">
+                                <div className="app-kpi-row">
+                                    <div className="app-kpi-icon-wrap">
+                                        <BookOpen className="h-5 w-5 text-emerald-600" />
+                                    </div>
+                                    <div>
+                                        <p className="app-kpi-label">Total Instructors</p>
+                                        <div className="app-kpi-value">{stats.totalInstructors.toLocaleString()}</div>
+                                        <p className="app-kpi-subtext">Active instructors</p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
 
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
-                                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.totalCourses.toLocaleString()}</div>
-                                <p className="text-xs text-muted-foreground mt-1">Published courses</p>
+                        <Card className="app-kpi-card">
+                            <CardContent className="app-kpi-content">
+                                <div className="app-kpi-row">
+                                    <div className="app-kpi-icon-wrap">
+                                        <BookOpen className="h-5 w-5 text-violet-600" />
+                                    </div>
+                                    <div>
+                                        <p className="app-kpi-label">Total Courses</p>
+                                        <div className="app-kpi-value">{stats.totalCourses.toLocaleString()}</div>
+                                        <p className="app-kpi-subtext">Published courses</p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
 
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                                <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">${stats.totalRevenue.toLocaleString()}</div>
-                                <p className="text-xs text-muted-foreground mt-1">This month</p>
+                        <Card className="app-kpi-card">
+                            <CardContent className="app-kpi-content">
+                                <div className="app-kpi-row">
+                                    <div className="app-kpi-icon-wrap">
+                                        <BarChart3 className="h-5 w-5 text-amber-600" />
+                                    </div>
+                                    <div>
+                                        <p className="app-kpi-label">Total Revenue</p>
+                                        <div className="app-kpi-value">${stats.totalRevenue.toLocaleString()}</div>
+                                        <p className="app-kpi-subtext">This month</p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>

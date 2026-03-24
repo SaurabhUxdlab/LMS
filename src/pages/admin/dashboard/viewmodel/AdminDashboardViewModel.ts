@@ -12,28 +12,24 @@ export const useAdminDashboardViewModel = () => {
   const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
 
   useEffect(() => {
-    // Simulate API call to fetch dashboard data
-    const timer = setTimeout(() => {
-      const fetchedStats: Stats = {
-        totalStudents: 1500,
-        totalInstructors: 75,
-        totalCourses: 200,
-        totalRevenue: 50000,
-      };
+    // Instantly set mock data for instant dashboard load
+    const fetchedStats: Stats = {
+      totalStudents: 1500,
+      totalInstructors: 75,
+      totalCourses: 200,
+      totalRevenue: 50000,
+    };
 
-      const fetchedActivity: Activity[] = [
-        { user: "John Doe", action: "New student registered", description: "John Doe registered as a student" },
-        { user: "Jane Smith", action: "New course published", description: "Introduction to JavaScript" },
-        { user: "Mike Johnson", action: "Instructor profile updated", description: "Mike Johnson updated his profile" },
-        { user: "Sarah Williams", action: "Course enrollment", description: "Sarah Williams enrolled in Web Development" },
-      ];
+    const fetchedActivity: Activity[] = [
+      { user: "John Doe", action: "New student registered", description: "John Doe registered as a student" },
+      { user: "Jane Smith", action: "New course published", description: "Introduction to JavaScript" },
+      { user: "Mike Johnson", action: "Instructor profile updated", description: "Mike Johnson updated his profile" },
+      { user: "Sarah Williams", action: "Course enrollment", description: "Sarah Williams enrolled in Web Development" },
+    ];
 
-      setStats(fetchedStats);
-      setRecentActivity(fetchedActivity);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    setStats(fetchedStats);
+    setRecentActivity(fetchedActivity);
+    setIsLoading(false);
   }, []);
 
   return {
