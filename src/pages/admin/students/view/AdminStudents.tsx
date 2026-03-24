@@ -10,8 +10,6 @@ import {
   Filter, 
   RefreshCw,
   MoreHorizontal,
-  Eye,
-  Edit,
   ChevronDown,
   Calendar,
   Clock,
@@ -237,9 +235,8 @@ export default function AdminStudents() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="app-page-shell">
-        {/* Top Header Section */}
         <header className="app-page-header">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
             <div>
               <div className="app-page-heading">
                 <Users className="app-page-title-icon" />
@@ -247,16 +244,16 @@ export default function AdminStudents() {
                   Student Management
                 </h1>
               </div>
-              <p className="text-lg text-muted-foreground mt-1">
+              <p className="mt-2 max-w-2xl text-base text-muted-foreground">
                 Track, filter, and manage student progress
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              <Button variant="outline" className="font-semibold">
+            <div className="flex flex-wrap items-center gap-3">
+              <Button variant="outline" className="h-11 rounded-xl border-slate-200 font-semibold shadow-none dark:border-zinc-700">
                 <Download className="h-4 w-4 mr-2" />
                 Export Data
               </Button>
-              <Button className="font-semibold">
+              <Button className="h-11 rounded-xl px-5 font-semibold">
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Student
               </Button>
@@ -265,7 +262,7 @@ export default function AdminStudents() {
         </header>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
           {summaryStats.map((stat, index) => (
             <Card key={index} className="app-kpi-card">
               <CardContent className="app-kpi-content">
@@ -285,165 +282,169 @@ export default function AdminStudents() {
         </div>
 
         {/* Filter & Action Bar */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="flex-1 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search students..."
-              className="pl-11 h-10 rounded-lg border-gray-200"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-            <SelectTrigger className="w-[200px] rounded-lg">
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by Course" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Courses</SelectItem>
-              <SelectItem value="react">React - The Complete Guide</SelectItem>
-              <SelectItem value="javascript">JavaScript - Zero to Hero</SelectItem>
-              <SelectItem value="typescript">TypeScript Masterclass</SelectItem>
-              <SelectItem value="node">Node.js Backend Development</SelectItem>
-            </SelectContent>
-          </Select>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" className="h-10 w-10">
-              <Calendar className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="icon" className="h-10 w-10">
-              <RefreshCw className="h-4 w-4" />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="font-semibold">
-                  Bulk Actions
-                  <ChevronDown className="h-4 w-4 ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Export Selected</DropdownMenuItem>
-                <DropdownMenuItem>Send Message</DropdownMenuItem>
-                <DropdownMenuItem>Deactivate Selected</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        <div className="mb-6">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-1 flex-col gap-4 lg:flex-row">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search students..."
+                  className="h-11 rounded-2xl border-slate-200 pl-11 shadow-none dark:border-zinc-700"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+                <SelectTrigger className="h-11 w-full rounded-2xl border-slate-200 shadow-none dark:border-zinc-700 lg:w-[240px]">
+                  <Filter className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Filter by Course" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Courses</SelectItem>
+                  <SelectItem value="react">React - The Complete Guide</SelectItem>
+                  <SelectItem value="javascript">JavaScript - Zero to Hero</SelectItem>
+                  <SelectItem value="typescript">TypeScript Masterclass</SelectItem>
+                  <SelectItem value="node">Node.js Backend Development</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" size="icon" className="h-11 w-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700">
+                <Calendar className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="icon" className="h-11 w-11 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700">
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="h-11 rounded-2xl border-slate-200 font-semibold shadow-none dark:border-zinc-700">
+                    Bulk Actions
+                    <ChevronDown className="h-4 w-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>Export Selected</DropdownMenuItem>
+                  <DropdownMenuItem>Send Message</DropdownMenuItem>
+                  <DropdownMenuItem>Deactivate Selected</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
 
-        {/* Student Table */}
-        <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
+        <Card className="gap-0 overflow-hidden rounded-3xl border border-slate-200 py-0 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+          <div className="border-b border-slate-200 px-5 py-4 dark:border-zinc-800 md:px-6">
+            <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Student Directory</h2>
+                <p className="text-sm text-muted-foreground">
+                  Review enrollments, progress, and latest activity for each learner.
+                </p>
+              </div>
+              <Badge variant="outline" className="w-fit rounded-full border-slate-200 bg-white px-3 py-1 dark:border-zinc-700 dark:bg-zinc-900">
+                {filteredStudents.length} students
+              </Badge>
+            </div>
+          </div>
+
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50">
-                <TableHead className="font-semibold w-[50px]"></TableHead>
+              <TableRow className="bg-slate-50 hover:bg-slate-50 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/40">
                 <TableHead className="font-semibold">Student</TableHead>
                 <TableHead className="font-semibold">Enrolled Courses</TableHead>
                 <TableHead className="font-semibold">Overall Progress</TableHead>
                 <TableHead className="font-semibold">Last Active</TableHead>
                 <TableHead className="font-semibold">Status</TableHead>
-                <TableHead className="font-semibold text-right">Actions</TableHead>
+                <TableHead className="text-right font-semibold">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {paginatedStudents.map(student => (
-                <>
-                  <TableRow 
-                    key={student.id} 
-                    className="hover:bg-muted/50 cursor-pointer"
-                    onClick={() => navigate(`/admin/students/${student.id}`)}
-                  >
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          navigate(`/admin/students/${student.id}`)
-                        }}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={student.avatar} />
-                          <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                            {student.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-semibold">{student.name}</p>
-                          <p className="text-sm text-muted-foreground">{student.email}</p>
-                        </div>
+                <TableRow
+                  key={student.id}
+                  className="cursor-pointer border-slate-200/80 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40"
+                  onClick={() => navigate(`/admin/students/${student.id}`)}
+                >
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10 border border-slate-200 dark:border-zinc-700">
+                        <AvatarImage src={student.avatar} />
+                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                          {student.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold text-slate-900 dark:text-white">{student.name}</p>
+                        <p className="text-sm text-muted-foreground">{student.email}</p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="font-semibold">{student.enrolledCourses}</span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3 w-[150px]">
-                        <Progress value={student.overallProgress} className="h-2" />
-                        <span className="text-sm font-medium">{student.overallProgress}%</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        <span className="text-sm">{student.lastActive}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={student.status === 'active' 
-                        ? 'bg-green-500/90 text-white hover:bg-green-600' 
-                        : 'bg-gray-500/90 text-white hover:bg-gray-600'
-                      }>
-                        {student.status === 'active' ? (
-                          <><CheckCircle2 className="h-3 w-3 mr-1" /> Active</>
-                        ) : (
-                          <><XCircle className="h-3 w-3 mr-1" /> Inactive</>
-                        )}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-semibold">{student.enrolledCourses}</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex w-[170px] items-center gap-3">
+                      <Progress value={student.overallProgress} className="h-2" />
+                      <span className="text-sm font-medium">{student.overallProgress}%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span className="text-sm">{student.lastActive}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={student.status === 'active'
+                      ? 'rounded-full bg-green-500/90 text-white hover:bg-green-600'
+                      : 'rounded-full bg-gray-500/90 text-white hover:bg-gray-600'
+                    }>
+                      {student.status === 'active' ? (
+                        <><CheckCircle2 className="h-3 w-3 mr-1" /> Active</>
+                      ) : (
+                        <><XCircle className="h-3 w-3 mr-1" /> Inactive</>
+                      )}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-end">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>View Details</DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                navigate(`/admin/students/${student.id}`)
+                              }}
+                            >
+                              View Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>Edit Details</DropdownMenuItem>
                             <DropdownMenuItem>Send Message</DropdownMenuItem>
                             <DropdownMenuItem>Reset Progress</DropdownMenuItem>
                             <DropdownMenuItem className="text-red-600">Deactivate</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                </>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))}
             </TableBody>
           </Table>
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between p-4 border-t">
+          <div className="flex flex-col gap-3 border-t border-slate-200 p-4 dark:border-zinc-800 md:flex-row md:items-center md:justify-between md:px-6">
             <p className="text-sm text-muted-foreground">
               Showing {(currentPage - 1) * studentsPerPage + 1} to {Math.min(currentPage * studentsPerPage, filteredStudents.length)} of {filteredStudents.length} students
             </p>
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                variant="outline"
                 size="sm"
+                className="rounded-xl"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(prev => prev - 1)}
               >
@@ -454,14 +455,16 @@ export default function AdminStudents() {
                   key={page}
                   variant={currentPage === page ? "default" : "outline"}
                   size="sm"
+                  className="rounded-xl"
                   onClick={() => setCurrentPage(page)}
                 >
                   {page}
                 </Button>
               ))}
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
+                className="rounded-xl"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(prev => prev + 1)}
               >
