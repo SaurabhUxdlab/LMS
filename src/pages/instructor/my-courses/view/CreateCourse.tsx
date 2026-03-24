@@ -99,7 +99,7 @@ const CreateCourse = () => {
         <Button variant="outline" className="flex-1">
           Save Draft
         </Button>
-        <Button className="flex-1 bg-green-600 hover:bg-green-700 text-white">
+        <Button className="flex-1 bg-primary hover:bg-primary/90 text-white">
           Save & Next
         </Button>
       </div>
