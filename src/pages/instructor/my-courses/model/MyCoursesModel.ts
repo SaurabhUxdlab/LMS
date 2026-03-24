@@ -4,4 +4,7 @@ export interface Course {
     thumbnail: string;
     status: "Published" | "Draft";
     students: number;
+    description?: string;
+    rating?: number;
+    duration?: string;
 }

@@ -17,7 +17,7 @@ import CoursesList from "@/pages/admin/course/view/CoursesList";
 import AdminCourseDetail from "@/pages/admin/course/view/CourseDetail";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
 import InstructorMyCourses from "@/pages/instructor/my-courses/view/MyCourses";
-import Analytics from "@/pages/instructor/Analytics/view/Analytics";
+import Analytics from "@/pages/instructor/analytics/view/Analytics";
 import Settings from "@/pages/instructor/settings/view/Settings";
 import CreateCourse from "@/pages/instructor/my-courses/view/CreateCourse";
 import InstructorCourseDetail from "@/pages/instructor/my-courses/view/CourseDetail";

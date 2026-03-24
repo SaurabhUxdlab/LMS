@@ -1,7 +1,7 @@
 // Instructor Management Dashboard
 // Route: /admin/instructors
 
-import { MouseEvent, useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
   Users, 

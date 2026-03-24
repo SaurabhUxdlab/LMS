@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/ui/select";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Bell, Lock, CreditCard, Settings as SettingsIcon, Link2 } from "lucide-react";
 
 const SETTINGS_MENU = [
@@ -98,7 +98,10 @@ function AccountSettings() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-4">
-          <Avatar src={avatar || undefined} className="w-16 h-16" />
+          <Avatar className="w-16 h-16">
+            <AvatarImage src={avatar || undefined} />
+            <AvatarFallback>A</AvatarFallback>
+          </Avatar>
           <div>
             <Button variant="outline" size="sm" onClick={() => setAvatar(null)}>
               Upload Avatar
