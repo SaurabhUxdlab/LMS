@@ -1,33 +1,38 @@
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { 
-  Users, 
-  Award, 
-  TrendingUp, 
-  Download, 
-  Plus, 
-  Search, 
-  Filter, 
+import {
+  Users,
+  Award,
+  TrendingUp,
+  Download,
+  Plus,
+  Search,
+  Filter,
   RefreshCw,
   MoreHorizontal,
   ChevronDown,
   Calendar,
   Clock,
   CheckCircle2,
-  XCircle
+  XCircle,
+  UserPlus,
+  Mail,
+  Phone,
+  MapPin,
+  ShieldCheck
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@/components/ui/table'
 import {
   DropdownMenu,
@@ -43,12 +48,23 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+import { Label } from '@/components/ui/label'
 
 // Student interface
 interface Student {
   id: string
+  studentId: string
   name: string
   email: string
+  phone?: string
+  location?: string
   avatar?: string
   enrolledCourses: number
   overallProgress: number
@@ -70,8 +86,11 @@ interface CourseProgress {
 const mockStudents: Student[] = [
   {
     id: '1',
+    studentId: 'STU-2024-001',
     name: 'Sarah Johnson',
     email: 'sarah.johnson@email.com',
+    phone: '+1 (415) 555-0142',
+    location: 'San Francisco, CA',
     avatar: '',
     enrolledCourses: 3,
     overallProgress: 78,
@@ -85,8 +104,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '2',
+    studentId: 'STU-2024-002',
     name: 'Michael Chen',
     email: 'michael.chen@email.com',
+    phone: '+1 (206) 555-0186',
+    location: 'Seattle, WA',
     avatar: '',
     enrolledCourses: 2,
     overallProgress: 45,
@@ -99,8 +121,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '3',
+    studentId: 'STU-2024-003',
     name: 'Emily Rodriguez',
     email: 'emily.rodriguez@email.com',
+    phone: '+1 (512) 555-0119',
+    location: 'Austin, TX',
     avatar: '',
     enrolledCourses: 4,
     overallProgress: 92,
@@ -115,8 +140,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '4',
+    studentId: 'STU-2024-004',
     name: 'David Kim',
     email: 'david.kim@email.com',
+    phone: '+1 (303) 555-0164',
+    location: 'Denver, CO',
     avatar: '',
     enrolledCourses: 1,
     overallProgress: 15,
@@ -128,8 +156,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '5',
+    studentId: 'STU-2024-005',
     name: 'Jessica Williams',
     email: 'jessica.williams@email.com',
+    phone: '+1 (404) 555-0131',
+    location: 'Atlanta, GA',
     avatar: '',
     enrolledCourses: 2,
     overallProgress: 63,
@@ -142,8 +173,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '6',
+    studentId: 'STU-2024-006',
     name: 'James Anderson',
     email: 'james.anderson@email.com',
+    phone: '+1 (617) 555-0175',
+    location: 'Boston, MA',
     avatar: '',
     enrolledCourses: 3,
     overallProgress: 34,
@@ -157,8 +191,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '7',
+    studentId: 'STU-2024-007',
     name: 'Amanda Taylor',
     email: 'amanda.taylor@email.com',
+    phone: '+1 (312) 555-0108',
+    location: 'Chicago, IL',
     avatar: '',
     enrolledCourses: 2,
     overallProgress: 88,
@@ -171,8 +208,11 @@ const mockStudents: Student[] = [
   },
   {
     id: '8',
+    studentId: 'STU-2024-008',
     name: 'Robert Martinez',
     email: 'robert.martinez@email.com',
+    phone: '+1 (602) 555-0157',
+    location: 'Phoenix, AZ',
     avatar: '',
     enrolledCourses: 1,
     overallProgress: 5,
@@ -212,15 +252,80 @@ const summaryStats = [
   }
 ]
 
+interface StudentFormState {
+  name: string
+  email: string
+  phone: string
+  location: string
+  status: Student['status']
+}
+
+const defaultStudentForm: StudentFormState = {
+  name: '',
+  email: '',
+  phone: '',
+  location: '',
+  status: 'active'
+}
+
 export default function AdminStudents() {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCourse, setSelectedCourse] = useState('all')
+  const [isStudentSheetOpen, setIsStudentSheetOpen] = useState(false)
+  const [studentSheetMode, setStudentSheetMode] = useState<'create' | 'edit'>('create')
+  const [studentForm, setStudentForm] = useState<StudentFormState>(defaultStudentForm)
+  const [studentPendingDelete, setStudentPendingDelete] = useState<Student | null>(null)
   const studentsPerPage = 5
 
+  const stopRowNavigation = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+  }
+
+  const openCreateStudentSheet = () => {
+    setStudentSheetMode('create')
+    setStudentForm(defaultStudentForm)
+    setIsStudentSheetOpen(true)
+  }
+
+  const openEditStudentSheet = (student: Student) => {
+    setStudentSheetMode('edit')
+    setStudentForm({
+      name: student.name,
+      email: student.email,
+      phone: student.phone ?? '',
+      location: student.location ?? '',
+      status: student.status
+    })
+    setIsStudentSheetOpen(true)
+  }
+
+  const closeStudentSheet = () => {
+    setIsStudentSheetOpen(false)
+  }
+
+  const handleSheetOpenChange = (open: boolean) => {
+    setIsStudentSheetOpen(open)
+  }
+
+  const handleStudentFormChange = (field: keyof StudentFormState, value: string) => {
+    setStudentForm(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const openDeleteConfirmation = (student: Student) => {
+    setStudentPendingDelete(student)
+  }
+
+  const closeDeleteConfirmation = () => {
+    setStudentPendingDelete(null)
+  }
+
   // Filter students based on search
-  const filteredStudents = mockStudents.filter(student => 
+  const filteredStudents = mockStudents.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.email.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -253,10 +358,137 @@ export default function AdminStudents() {
                 <Download className="h-4 w-4 mr-2" />
                 Export Data
               </Button>
-              <Button className="h-11 rounded-xl px-5 font-semibold">
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Student
-              </Button>
+              <Sheet open={isStudentSheetOpen} onOpenChange={handleSheetOpenChange}>
+                <Button className="h-11 rounded-xl px-5 font-semibold" onClick={openCreateStudentSheet}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add New Student
+                </Button>
+                <SheetContent side="right" className="flex w-full flex-col border-l border-slate-200 bg-white p-0 sm:max-w-[720px] dark:border-zinc-800 dark:bg-zinc-950">
+                  <SheetHeader className="border-b border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100/80 px-6 py-6 text-left dark:border-zinc-800 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
+                        <UserPlus className="h-7 w-7" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <SheetTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                            {studentSheetMode === 'edit' ? 'Edit Student Details' : 'Add New Student'}
+                          </SheetTitle>
+                          <Badge variant="outline" className="rounded-full border-primary/20 bg-primary/5 px-3 py-1 text-primary">
+                            {studentSheetMode === 'edit' ? 'Edit Mode' : 'Admin Access'}
+                          </Badge>
+                        </div>
+                        <SheetDescription className="max-w-xl text-sm leading-6 text-slate-600 dark:text-zinc-400">
+                          {studentSheetMode === 'edit'
+                            ? 'Update the selected student profile details without leaving the directory.'
+                            : 'Create a new learner profile with the core contact and enrollment details required for onboarding.'}
+                        </SheetDescription>
+                      </div>
+                    </div>
+                  </SheetHeader>
+
+                  <div className="flex-1 overflow-y-auto px-6 py-6">
+                    <div className="grid gap-5 md:grid-cols-2">
+                      <div className="grid gap-2 md:col-span-2">
+                        <Label htmlFor="name" className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                          Full Name
+                        </Label>
+                        <div className="relative">
+                          <UserPlus className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                          <Input
+                            id="name"
+                            placeholder="Enter full name"
+                            value={studentForm.name}
+                            onChange={(e) => handleStudentFormChange('name', e.target.value)}
+                            className="h-12 rounded-2xl border-slate-200 pl-11 shadow-none dark:border-zinc-700"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid gap-2">
+                        <Label htmlFor="email" className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                          Email Address
+                        </Label>
+                        <div className="relative">
+                          <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="Enter email address"
+                            value={studentForm.email}
+                            onChange={(e) => handleStudentFormChange('email', e.target.value)}
+                            className="h-12 rounded-2xl border-slate-200 pl-11 shadow-none dark:border-zinc-700"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid gap-2">
+                        <Label htmlFor="phone" className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                          Phone Number
+                        </Label>
+                        <div className="relative">
+                          <Phone className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                          <Input
+                            id="phone"
+                            placeholder="Enter phone number"
+                            value={studentForm.phone}
+                            onChange={(e) => handleStudentFormChange('phone', e.target.value)}
+                            className="h-12 rounded-2xl border-slate-200 pl-11 shadow-none dark:border-zinc-700"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid gap-2">
+                        <Label htmlFor="location" className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                          Location
+                        </Label>
+                        <div className="relative">
+                          <MapPin className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                          <Input
+                            id="location"
+                            placeholder="Enter location"
+                            value={studentForm.location}
+                            onChange={(e) => handleStudentFormChange('location', e.target.value)}
+                            className="h-12 rounded-2xl border-slate-200 pl-11 shadow-none dark:border-zinc-700"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid gap-2">
+                        <Label htmlFor="status" className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                          Account Status
+                        </Label>
+                        <Select
+                          value={studentForm.status}
+                          onValueChange={(value: Student['status']) => handleStudentFormChange('status', value)}
+                        >
+                          <SelectTrigger id="status" className="h-12 rounded-2xl border-slate-200 shadow-none dark:border-zinc-700">
+                            <div className="flex items-center gap-2">
+                              <ShieldCheck className="h-4 w-4 text-slate-400" />
+                              <SelectValue placeholder="Select status" />
+                            </div>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="inactive">Inactive</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="sticky bottom-0 border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+                    <div className="flex items-center justify-end gap-3">
+                      <Button variant="outline" className="h-11 rounded-xl border-slate-200 px-5 font-semibold shadow-none dark:border-zinc-700" onClick={closeStudentSheet}>
+                        Cancel
+                      </Button>
+                      <Button className="h-11 rounded-xl px-5 font-semibold shadow-sm">
+                        {studentSheetMode === 'edit' ? 'Save Changes' : 'Add Student'}
+                      </Button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </header>
@@ -350,6 +582,7 @@ export default function AdminStudents() {
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50 hover:bg-slate-50 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/40">
+                <TableHead className="font-semibold">Student ID</TableHead>
                 <TableHead className="font-semibold">Student</TableHead>
                 <TableHead className="font-semibold">Enrolled Courses</TableHead>
                 <TableHead className="font-semibold">Overall Progress</TableHead>
@@ -365,6 +598,9 @@ export default function AdminStudents() {
                   className="cursor-pointer border-slate-200/80 transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40"
                   onClick={() => navigate(`/admin/students/${student.id}`)}
                 >
+                  <TableCell>
+                    <span className="font-medium text-slate-700 dark:text-zinc-300">{student.studentId}</span>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10 border border-slate-200 dark:border-zinc-700">
@@ -406,29 +642,47 @@ export default function AdminStudents() {
                       )}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell onClick={stopRowNavigation}>
                     <div className="flex items-center justify-end">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                navigate(`/admin/students/${student.id}`)
-                              }}
-                            >
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>Edit Details</DropdownMenuItem>
-                            <DropdownMenuItem>Send Message</DropdownMenuItem>
-                            <DropdownMenuItem>Reset Progress</DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">Deactivate</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 rounded-xl"
+                            onClick={stopRowNavigation}
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              navigate(`/admin/students/${student.id}`)
+                            }}
+                          >
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openEditStudentSheet(student)
+                            }}
+                          >
+                            Edit Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-red-600"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openDeleteConfirmation(student)
+                            }}
+                          >
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -474,6 +728,48 @@ export default function AdminStudents() {
           </div>
         </Card>
       </div>
+
+      {studentPendingDelete ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 px-4 backdrop-blur-sm"
+          onClick={closeDeleteConfirmation}
+        >
+          <div
+            className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-600">
+                <XCircle className="h-6 w-6" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
+                  Delete Student
+                </h3>
+                <p className="text-sm leading-6 text-slate-600 dark:text-zinc-400">
+                  Are you sure you want to delete <span className="font-semibold text-slate-900 dark:text-white">{studentPendingDelete.name}</span>? This action cannot be undone.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <Button
+                variant="outline"
+                className="h-11 rounded-xl border-slate-200 px-5 font-semibold shadow-none dark:border-zinc-700"
+                onClick={closeDeleteConfirmation}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="h-11 rounded-xl bg-red-600 px-5 font-semibold text-white shadow-sm hover:bg-red-700"
+                onClick={closeDeleteConfirmation}
+              >
+                Delete Student
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

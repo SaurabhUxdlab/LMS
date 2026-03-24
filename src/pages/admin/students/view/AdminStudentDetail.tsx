@@ -223,26 +223,26 @@ interface StudentHeaderProps {
 
 function StudentHeader({ student }: StudentHeaderProps) {
     return (
-        <Card className="border-0 shadow-lg rounded-xl">
+        <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
             <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                     {/* Student Info */}
                     <div className="flex items-start gap-4">
-                        <Avatar className="h-20 w-20 border-2 border-primary/20">
+                        <Avatar className="h-20 w-20 border-2 border-slate-200">
                             <AvatarImage src={student.avatar} />
-                            <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
+                            <AvatarFallback className="bg-slate-100 text-slate-700 text-2xl font-bold">
                                 {student.name.split(' ').map(n => n[0]).join('')}
                             </AvatarFallback>
                         </Avatar>
                         <div>
-                                <div className="flex items-center gap-3 flex-wrap">
-                                    <Users className="app-page-title-icon" />
-                                    <h1 className="app-page-title">{student.name}</h1>
-                                    <Badge className="bg-amber-500/90 text-white hover:bg-amber-600/90">
-                                        Premium
-                                    </Badge>
+                            <div className="flex items-center gap-3 flex-wrap">
+                                <Users className="h-5 w-5 text-slate-500" />
+                                <h1 className="text-2xl font-bold text-slate-900">{student.name}</h1>
+                                <Badge className="bg-amber-500/90 text-white hover:bg-amber-600/90">
+                                    Premium
+                                </Badge>
                             </div>
-                            <div className="flex flex-wrap items-center gap-4 mt-2 text-muted-foreground text-sm">
+                            <div className="flex flex-wrap items-center gap-4 mt-2 text-slate-500 text-sm">
                                 <div className="flex items-center gap-1.5">
                                     <Mail className="h-4 w-4" />
                                     <span>{student.email}</span>
@@ -252,7 +252,7 @@ function StudentHeader({ student }: StudentHeaderProps) {
                                     <span>{student.studentId}</span>
                                 </div>
                             </div>
-                            <div className="flex flex-wrap items-center gap-4 mt-1 text-muted-foreground text-sm">
+                            <div className="flex flex-wrap items-center gap-4 mt-1 text-slate-500 text-sm">
                                 <div className="flex items-center gap-1.5">
                                     <Calendar className="h-4 w-4" />
                                     <span>Member since {student.joinedDate}</span>
@@ -267,7 +267,7 @@ function StudentHeader({ student }: StudentHeaderProps) {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" className="font-semibold">
+                        <Button variant="outline" className="font-semibold border-slate-300 hover:bg-slate-50">
                             <MessageSquare className="h-4 w-4 mr-2" />
                             Message
                         </Button>
@@ -313,7 +313,7 @@ function CourseItem({ course, studentId, onNavigate }: CourseItemProps) {
     }
 
     return (
-        <div 
+        <div
             className="p-4 border border-border/50 rounded-xl hover:bg-muted/40 transition-all duration-200 cursor-pointer group"
             onClick={handleClick}
         >
@@ -322,7 +322,7 @@ function CourseItem({ course, studentId, onNavigate }: CourseItemProps) {
                 <div className={`p-3 rounded-lg ${getIconColor(course.name)}`}>
                     {getCourseIcon(course.name)}
                 </div>
-                
+
                 {/* Course Info */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-2">
@@ -333,10 +333,10 @@ function CourseItem({ course, studentId, onNavigate }: CourseItemProps) {
                             </p>
                         </div>
                         <div className="flex flex-col items-end gap-1">
-                            <Badge 
+                            <Badge
                                 variant={course.status === 'completed' ? 'default' : 'outline'}
-                                className={course.status === 'completed' 
-                                    ? 'bg-green-500/90 text-white hover:bg-green-600/90' 
+                                className={course.status === 'completed'
+                                    ? 'bg-green-500/90 text-white hover:bg-green-600/90'
                                     : 'bg-blue-500/10 text-blue-600 border-blue-200'
                                 }
                             >
@@ -345,9 +345,9 @@ function CourseItem({ course, studentId, onNavigate }: CourseItemProps) {
                             <span className="text-sm font-semibold text-foreground">{course.progress}%</span>
                         </div>
                     </div>
-                    
+
                     <Progress value={course.progress} className="h-2 mb-3" />
-                    
+
                     <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">
                             {course.lessonsCompleted}/{course.totalLessons} lessons
@@ -372,11 +372,11 @@ interface CourseListProps {
 
 function CourseList({ courses, studentId, onNavigate }: CourseListProps) {
     return (
-        <Card className="border-0 shadow-lg rounded-xl">
-            <CardHeader className="pb-3 border-b border-border/50">
+        <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+            <CardHeader className="pb-3 border-b border-slate-200">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-bold">Enrolled Courses</CardTitle>
-                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+                    <CardTitle className="text-lg font-bold text-slate-900">Enrolled Courses</CardTitle>
+                    <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900 hover:bg-slate-100">
                         View All
                         <ChevronRight className="h-4 w-4 ml-1" />
                     </Button>
@@ -384,9 +384,9 @@ function CourseList({ courses, studentId, onNavigate }: CourseListProps) {
             </CardHeader>
             <CardContent className="p-4 space-y-4">
                 {courses.map(course => (
-                    <CourseItem 
-                        key={course.id} 
-                        course={course} 
+                    <CourseItem
+                        key={course.id}
+                        course={course}
                         studentId={studentId}
                         onNavigate={onNavigate}
                     />
@@ -424,7 +424,7 @@ function AssessmentTable({ assessments }: AssessmentTableProps) {
                                 <TableCell className="text-muted-foreground">{assessment.date}</TableCell>
                                 <TableCell className="font-semibold">{assessment.score}%</TableCell>
                                 <TableCell>
-                                    <Badge 
+                                    <Badge
                                         variant="outline"
                                         className={assessment.status === 'passed'
                                             ? 'bg-green-500/10 text-green-600 border-green-200 hover:bg-green-500/20'
@@ -488,27 +488,27 @@ function KPISection({ performance }: KPISectionProps) {
                         <p className="text-3xl font-black text-foreground">{performance.coursesCompleted}</p>
                         <p className="text-lg text-muted-foreground mb-1">/ {performance.totalCourses}</p>
                     </div>
-                    <Progress 
-                        value={(performance.coursesCompleted / performance.totalCourses) * 100} 
-                        className="h-2 mt-3" 
+                    <Progress
+                        value={(performance.coursesCompleted / performance.totalCourses) * 100}
+                        className="h-2 mt-3"
                     />
                 </CardContent>
             </Card>
 
             {/* Skill Badges */}
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-                <CardHeader className="pb-3 border-b border-border/50 px-4">
-                    <CardTitle className="text-lg font-bold">Skill Badges</CardTitle>
+            <Card className="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden">
+                <CardHeader className="pb-3 border-b border-slate-200 px-4">
+                    <CardTitle className="text-lg font-bold text-slate-900">Skill Badges</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4">
                     <div className="flex flex-wrap gap-3">
                         {['React', 'TypeScript', 'Node.js', 'Python', 'SQL'].map((skill, index) => (
                             <div
                                 key={index}
-                                className="flex items-center gap-2 px-3 py-2 bg-muted/50 rounded-full hover:bg-muted/70 transition-colors cursor-pointer"
+                                className="flex items-center gap-2 px-3 py-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors cursor-pointer"
                             >
                                 <span className="text-lg">{['⚛️', '📘', '🟢', '🐍', '🗄️'][index]}</span>
-                                <span className="font-medium text-sm">{skill}</span>
+                                <span className="font-medium text-sm text-slate-700">{skill}</span>
                             </div>
                         ))}
                     </div>
@@ -516,24 +516,24 @@ function KPISection({ performance }: KPISectionProps) {
             </Card>
 
             {/* Assigned Mentor */}
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-                <CardHeader className="pb-3 border-b border-border/50 px-4">
-                    <CardTitle className="text-lg font-bold">Assigned Mentor</CardTitle>
+            <Card className="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden">
+                <CardHeader className="pb-3 border-b border-slate-200 px-4">
+                    <CardTitle className="text-lg font-bold text-slate-900">Assigned Mentor</CardTitle>
                 </CardHeader>
                 <CardContent className="p-4">
-                    <div className="flex items-center gap-4 p-3 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
                         <Avatar className="h-12 w-12">
                             <AvatarImage src="" />
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            <AvatarFallback className="bg-slate-200 text-slate-700 font-semibold">
                                 JS
                             </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
-                            <p className="font-semibold">John Smith</p>
-                            <p className="text-sm text-muted-foreground">Senior Developer</p>
+                            <p className="font-semibold text-slate-900">John Smith</p>
+                            <p className="text-sm text-slate-500">Senior Developer</p>
                         </div>
-                        <Button variant="ghost" size="icon" className="hover:bg-primary/10">
-                            <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                        <Button variant="ghost" size="icon" className="hover:bg-slate-200">
+                            <MessageSquare className="h-4 w-4 text-slate-500" />
                         </Button>
                     </div>
                 </CardContent>
@@ -560,15 +560,15 @@ export default function AdminStudentDetail() {
                 {/* Back Button */}
                 <Button
                     variant="ghost"
-                    className="mb-4 -ml-2 text-muted-foreground hover:text-foreground"
-                    onClick={() => navigate('/admin/students')}
+                    className="mb-6 -ml-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                    onClick={() => navigate(-1)}
                 >
                     <ArrowLeft className="h-4 w-4 mr-2" />
-                    Back to Students
+                    Back
                 </Button>
 
                 {/* Top Header Card */}
-                <StudentHeader 
+                <StudentHeader
                     student={student}
                 />
 
@@ -578,7 +578,7 @@ export default function AdminStudentDetail() {
                     <div className="lg:col-span-2">
                         {/* Tabs Navigation */}
                         <Tabs defaultValue="courses" className="w-full">
-                            <TabsList className="bg-white border-0 shadow-sm rounded-xl p-1 mb-6 w-full justify-start">
+                            <TabsList className="bg-white border border-slate-200 shadow-sm rounded-xl p-1 mb-6 w-full justify-start">
                                 <TabsTrigger
                                     value="courses"
                                     className="font-semibold data-[state=active]:bg-primary data-[state=active]:text-white px-4"
@@ -617,28 +617,28 @@ export default function AdminStudentDetail() {
 
                             {/* Certificates Tab */}
                             <TabsContent value="certificates" className="mt-0">
-                                <Card className="border-0 shadow-lg rounded-xl">
-                                    <CardHeader className="pb-3 border-b border-border/50">
-                                        <CardTitle className="text-lg font-bold">Earned Certificates</CardTitle>
+                                <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+                                    <CardHeader className="pb-3 border-b border-slate-200">
+                                        <CardTitle className="text-lg font-bold text-slate-900">Earned Certificates</CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-4 space-y-4">
                                         {student.certificates.map(cert => (
                                             <div
                                                 key={cert.id}
-                                                className="p-4 border border-border/50 rounded-xl flex items-center justify-between hover:bg-muted/40 transition-all duration-200"
+                                                className="p-4 border border-slate-200 rounded-xl flex items-center justify-between hover:bg-slate-50 transition-all duration-200"
                                             >
                                                 <div className="flex items-center gap-4">
-                                                    <div className="p-3 bg-amber-500/10 rounded-xl">
+                                                    <div className="p-3 bg-amber-100 rounded-xl">
                                                         <Award className="h-6 w-6 text-amber-600" />
                                                     </div>
                                                     <div>
-                                                        <h3 className="font-semibold">{cert.courseName}</h3>
-                                                        <p className="text-sm text-muted-foreground">Credential ID: {cert.credentialId}</p>
+                                                        <h3 className="font-semibold text-slate-900">{cert.courseName}</h3>
+                                                        <p className="text-sm text-slate-500">Credential ID: {cert.credentialId}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3">
-                                                    <span className="text-sm text-muted-foreground">{cert.issuedDate}</span>
-                                                    <Button variant="outline" size="sm" className="font-medium">
+                                                    <span className="text-sm text-slate-500">{cert.issuedDate}</span>
+                                                    <Button variant="outline" size="sm" className="font-medium border-slate-300 hover:bg-slate-50">
                                                         <Download className="h-4 w-4 mr-1" />
                                                         Download
                                                     </Button>
@@ -651,25 +651,25 @@ export default function AdminStudentDetail() {
 
                             {/* Activity Log Tab */}
                             <TabsContent value="activity" className="mt-0">
-                                <Card className="border-0 shadow-lg rounded-xl">
-                                    <CardHeader className="pb-3 border-b border-border/50">
-                                        <CardTitle className="text-lg font-bold">Recent Activity</CardTitle>
+                                <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+                                    <CardHeader className="pb-3 border-b border-slate-200">
+                                        <CardTitle className="text-lg font-bold text-slate-900">Recent Activity</CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-4">
                                         <div className="space-y-4">
                                             {student.activityLog.map(activity => (
                                                 <div
                                                     key={activity.id}
-                                                    className="flex items-start gap-4 pb-4 border-b border-border/30 last:border-0 last:pb-0 hover:bg-muted/30 -mx-2 px-2 py-1 rounded-lg transition-colors"
+                                                    className="flex items-start gap-4 pb-4 border-b border-slate-100 last:border-0 last:pb-0 hover:bg-slate-50 -mx-2 px-2 py-1 rounded-lg transition-colors"
                                                 >
-                                                    <div className="p-2 bg-primary/10 rounded-lg">
-                                                        <Play className="h-4 w-4 text-primary" />
+                                                    <div className="p-2 bg-slate-100 rounded-lg">
+                                                        <Play className="h-4 w-4 text-slate-600" />
                                                     </div>
                                                     <div className="flex-1">
-                                                        <p className="font-medium">{activity.action}</p>
-                                                        <p className="text-sm text-muted-foreground">{activity.details}</p>
+                                                        <p className="font-medium text-slate-900">{activity.action}</p>
+                                                        <p className="text-sm text-slate-500">{activity.details}</p>
                                                     </div>
-                                                    <span className="text-sm text-muted-foreground whitespace-nowrap">{activity.timestamp}</span>
+                                                    <span className="text-sm text-slate-400 whitespace-nowrap">{activity.timestamp}</span>
                                                 </div>
                                             ))}
                                         </div>

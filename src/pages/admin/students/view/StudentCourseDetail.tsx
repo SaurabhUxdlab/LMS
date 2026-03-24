@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
-import { 
-  ArrowLeft, 
-  Clock, 
-  Calendar, 
-  CheckCircle2, 
-  PlayCircle, 
-  FileText, 
+import {
+  ArrowLeft,
+  Clock,
+  Calendar,
+  CheckCircle2,
+  PlayCircle,
+  FileText,
   ClipboardCheck,
   Download,
   BookOpen,
@@ -18,11 +18,11 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { 
+import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent 
+  AccordionContent
 } from '@/components/ui/accordion'
 
 // ==================== Types ====================
@@ -149,23 +149,33 @@ function CourseHeader({ data }: CourseHeaderProps) {
   const navigate = useNavigate()
 
   return (
-    <Card className="border-0 shadow-lg rounded-xl">
-      <CardContent className="p-6">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+    <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+      <CardContent className="p-5">
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          className="mb-3 -ml-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back
+        </Button>
+
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           {/* Left: Student Info */}
           <div className="flex items-start gap-4">
-            <Avatar className="h-16 w-16 border-2 border-primary/20">
+            <Avatar className="h-14 w-14 border-2 border-slate-200">
               <AvatarImage src={data.studentAvatar} />
-              <AvatarFallback className="bg-primary/10 text-primary text-xl font-bold">
+              <AvatarFallback className="bg-slate-100 text-slate-700 text-lg font-bold">
                 {data.studentName.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
             <div>
-              <div className="app-page-heading">
-                <BookOpen className="app-page-title-icon" />
-                <h1 className="app-page-title">{data.courseTitle}</h1>
+              <div className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-slate-500" />
+                <h1 className="text-xl font-bold text-slate-900">{data.courseTitle}</h1>
               </div>
-              <p className="text-muted-foreground">
+              <p className="text-slate-500 text-sm">
                 Student: {data.studentName} | ID: {data.studentId}
               </p>
             </div>
@@ -173,23 +183,13 @@ function CourseHeader({ data }: CourseHeaderProps) {
 
           {/* Right: Overall Completion */}
           <div className="flex flex-col items-end gap-2">
-            <div className="text-4xl font-black text-primary">{data.overallProgress}%</div>
-            <Progress value={data.overallProgress} className="w-48 h-2" />
-            <p className="text-sm text-muted-foreground">
+            <div className="text-3xl font-bold text-primary">{data.overallProgress}%</div>
+            <Progress value={data.overallProgress} className="w-40 h-2" />
+            <p className="text-sm text-slate-500">
               Module {data.currentModule} of {data.totalModules} in progress
             </p>
           </div>
         </div>
-
-        {/* Back Button */}
-        <Button 
-          variant="ghost" 
-          className="mb-4 -ml-2 text-muted-foreground hover:text-foreground"
-          onClick={() => navigate('/admin/students')}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Students
-        </Button>
       </CardContent>
     </Card>
   )
@@ -229,7 +229,7 @@ function LessonItem({ lesson }: LessonItemProps) {
         )
       case 'not_started':
         return (
-          <Badge variant="outline" className="text-muted-foreground">
+          <Badge variant="outline" className="text-slate-500">
             Not Started
           </Badge>
         )
@@ -237,10 +237,10 @@ function LessonItem({ lesson }: LessonItemProps) {
   }
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group">
+    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer group">
       <div className="flex items-center gap-3">
         {getIcon()}
-        <span className="font-medium text-sm">{lesson.title}</span>
+        <span className="font-medium text-sm text-slate-900">{lesson.title}</span>
       </div>
       <div className="flex items-center gap-3">
         {lesson.score && (
@@ -249,7 +249,7 @@ function LessonItem({ lesson }: LessonItemProps) {
           </Badge>
         )}
         {lesson.attempts && lesson.attempts > 1 && (
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-slate-500">
             {lesson.attempts} attempts
           </span>
         )}
@@ -272,27 +272,27 @@ function ModuleAccordion({ modules }: ModuleAccordionProps) {
       case 'active':
         return <PlayCircle className="h-5 w-5 text-blue-500" />
       case 'locked':
-        return <Lock className="h-5 w-5 text-muted-foreground" />
+        return <Lock className="h-5 w-5 text-slate-400" />
     }
   }
 
   const completedCount = modules.filter(m => m.status === 'completed').length
 
   return (
-    <Card className="border-0 shadow-lg rounded-xl">
-      <CardHeader className="pb-4">
+    <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+      <CardHeader className="pb-4 border-b border-slate-200">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-bold">Course Curriculum</CardTitle>
+          <CardTitle className="text-lg font-bold text-slate-900">Course Curriculum</CardTitle>
           <Badge variant="outline">
             {completedCount}/{modules.length} Completed
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-4">
         <Accordion type="single" defaultValue="module-3" collapsible className="w-full">
           {modules.map((module) => (
-            <AccordionItem 
-              key={module.id} 
+            <AccordionItem
+              key={module.id}
               value={module.id}
               className={module.status === 'active' ? 'border-l-4 border-l-blue-500 pl-4 -ml-4' : ''}
             >
@@ -300,8 +300,8 @@ function ModuleAccordion({ modules }: ModuleAccordionProps) {
                 <div className="flex items-center gap-3 text-left">
                   {getStatusIcon(module.status)}
                   <div>
-                    <span className="font-semibold">{module.title}</span>
-                    <span className="text-sm text-muted-foreground ml-2">
+                    <span className="font-semibold text-slate-900">{module.title}</span>
+                    <span className="text-sm text-slate-500 ml-2">
                       ({module.lessons.filter(l => l.status === 'completed').length}/{module.lessons.length} lessons)
                     </span>
                   </div>
@@ -329,28 +329,28 @@ interface StudentInsightsProps {
 
 function StudentInsights({ data }: StudentInsightsProps) {
   return (
-    <Card className="border-0 shadow-lg rounded-xl">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-bold">Student Insights</CardTitle>
+    <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+      <CardHeader className="pb-4 border-b border-slate-200">
+        <CardTitle className="text-lg font-bold text-slate-900">Student Insights</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Clock className="h-4 w-4 text-primary" />
+          <div className="p-2 bg-slate-100 rounded-lg">
+            <Clock className="h-4 w-4 text-slate-600" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Time Spent</p>
-            <p className="font-semibold">{data.timeSpent}</p>
+            <p className="text-sm text-slate-500">Time Spent</p>
+            <p className="font-semibold text-slate-900">{data.timeSpent}</p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Calendar className="h-4 w-4 text-primary" />
+          <div className="p-2 bg-slate-100 rounded-lg">
+            <Calendar className="h-4 w-4 text-slate-600" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Last Accessed</p>
-            <p className="font-semibold">{data.lastAccessed}</p>
+            <p className="text-sm text-slate-500">Last Accessed</p>
+            <p className="font-semibold text-slate-900">{data.lastAccessed}</p>
           </div>
         </div>
 
@@ -374,7 +374,7 @@ function StudentInsights({ data }: StudentInsightsProps) {
 // Report Card Component
 function ReportCard() {
   return (
-    <Card className="border-0 shadow-lg rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+    <Card className="bg-gradient-to-br from-blue-600 to-blue-800 text-white border-0 shadow-lg rounded-2xl">
       <CardContent className="p-6">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
@@ -382,11 +382,11 @@ function ReportCard() {
             <h3 className="text-xl font-bold">Academic Report</h3>
           </div>
           <p className="text-blue-100 text-sm">
-            Download a comprehensive progress report including grades, completed modules, 
+            Download a comprehensive progress report including grades, completed modules,
             and performance metrics.
           </p>
-          <Button 
-            variant="secondary" 
+          <Button
+            variant="secondary"
             className="w-full bg-white text-blue-700 hover:bg-blue-50"
           >
             <Download className="h-4 w-4 mr-2" />
@@ -405,31 +405,31 @@ interface CourseInfoProps {
 
 function CourseInfo({ data }: CourseInfoProps) {
   return (
-    <Card className="border-0 shadow-lg rounded-xl">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-bold">Course Info</CardTitle>
+    <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl">
+      <CardHeader className="pb-4 border-b border-slate-200">
+        <CardTitle className="text-lg font-bold text-slate-900">Course Info</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" />
-            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+            <AvatarFallback className="bg-slate-100 text-slate-700 font-semibold">
               SM
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-sm text-muted-foreground">Instructor</p>
-            <p className="font-semibold">{data.instructor}</p>
+            <p className="text-sm text-slate-500">Instructor</p>
+            <p className="font-semibold text-slate-900">{data.instructor}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <BookOpen className="h-4 w-4 text-primary" />
+          <div className="p-2 bg-slate-100 rounded-lg">
+            <BookOpen className="h-4 w-4 text-slate-600" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Enrollment Date</p>
-            <p className="font-semibold">{data.enrollmentDate}</p>
+            <p className="text-sm text-slate-500">Enrollment Date</p>
+            <p className="font-semibold text-slate-900">{data.enrollmentDate}</p>
           </div>
         </div>
       </CardContent>
