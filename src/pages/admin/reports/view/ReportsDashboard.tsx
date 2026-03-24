@@ -2,8 +2,10 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpRight, ArrowDownRight, Users, BookOpen, DollarSign, BarChart2, TrendingUp, PieChart, UserCircle2, Star } from "lucide-react";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 // --- Mock Data ---
 const stats = [
@@ -93,14 +95,17 @@ const categoryDistribution = [
   { category: "Marketing", value: 15, color: "bg-yellow-500" },
 ];
 
+// --- Export Functionality ---
 // --- Components ---
 
 function ReportsHeader() {
+  const [timeRange, setTimeRange] = React.useState("7d");
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
       <div>
         <div className="app-page-heading">
           <BarChart2 className="app-page-title-icon" />
+          <BarChart3 className="app-page-title-icon" />
           <h1 className="app-page-title">Reports & Analytics</h1>
         </div>
         <p className="text-muted-foreground">Track platform performance, engagement, and growth</p>
@@ -110,8 +115,10 @@ function ReportsHeader() {
           <option value="7d">Last 7 days</option>
           <option value="30d">Last 30 days</option>
           <option value="custom">Custom</option>
+      <div className="flex items-center gap-2 flex-wrap">
         </Select>
         <Button variant="outline">Export Report</Button>
+
       </div>
     </div>
   );
@@ -144,8 +151,10 @@ function StatsCards() {
 }
 
 function EnrollmentChart() {
+  const chartConfig = {
   return (
     <Card className="col-span-2 h-64">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Enrollment Trends</CardTitle>
       </CardHeader>
@@ -155,14 +164,17 @@ function EnrollmentChart() {
           <TrendingUp className="w-10 h-10 text-blue-400" />
           <span className="ml-2 text-muted-foreground">[Chart Placeholder]</span>
         </div>
+        <ChartContainer config={chartConfig} className="w-full h-80">
       </CardContent>
     </Card>
   );
 }
 
 function RevenueChart() {
+  const chartConfig = {
   return (
     <Card className="h-64">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Revenue Overview</CardTitle>
       </CardHeader>
@@ -172,6 +184,7 @@ function RevenueChart() {
           <BarChart2 className="w-10 h-10 text-yellow-400" />
           <span className="ml-2 text-muted-foreground">[Chart Placeholder]</span>
         </div>
+        <ChartContainer config={chartConfig} className="w-full h-80">
       </CardContent>
     </Card>
   );
@@ -180,6 +193,7 @@ function RevenueChart() {
 function CoursePerformanceTable() {
   return (
     <Card className="overflow-x-auto">
+    <Card className="overflow-x-auto w-full">
       <CardHeader>
         <CardTitle>Course Performance</CardTitle>
       </CardHeader>
@@ -196,6 +210,7 @@ function CoursePerformanceTable() {
           <tbody>
             {coursePerformance.map((course) => (
               <tr key={course.name} className="hover:bg-accent transition-colors">
+              <tr key={course.name} className="hover:bg-accent transition-colors border-b">
                 <td className="px-4 py-2">{course.name}</td>
                 <td className="px-4 py-2">{course.enrollments}</td>
                 <td className="px-4 py-2">{course.completion}%</td>
@@ -215,6 +230,7 @@ function CoursePerformanceTable() {
 function TopInstructorsList() {
   return (
     <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Top Instructors</CardTitle>
       </CardHeader>
@@ -228,6 +244,7 @@ function TopInstructorsList() {
                 <div className="text-xs text-muted-foreground">{inst.students} students</div>
               </div>
               <Badge variant="secondary" className="flex items-center gap-1">
+              <Badge variant="secondary" className="flex items-center gap-1 whitespace-nowrap">
                 <Star className="w-3 h-3 text-yellow-400" />
                 {inst.rating}
               </Badge>
@@ -242,6 +259,7 @@ function TopInstructorsList() {
 function EngagementMetrics() {
   return (
     <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Student Engagement</CardTitle>
       </CardHeader>
@@ -267,8 +285,10 @@ function EngagementMetrics() {
 
 function CategoryDistribution() {
   // Pie chart placeholder
+  const COLORS = ["#3b82f6", "#ec4899", "#10b981", "#f59e0b"];
   return (
     <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Category Distribution</CardTitle>
       </CardHeader>
@@ -288,6 +308,7 @@ function CategoryDistribution() {
             ))}
           </div>
         </div>
+        <ChartContainer config={chartConfig} className="w-full h-80">
       </CardContent>
     </Card>
   );
@@ -301,18 +322,23 @@ export default function ReportsDashboard() {
       <ReportsHeader />
       <StatsCards />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      
         <EnrollmentChart />
         <RevenueChart />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 flex flex-col gap-6">
+
           <CoursePerformanceTable />
         </div>
-        <TopInstructorsList />
+        <div className="lg:col-span-1">
+          <TopInstructorsList />
+        </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <EngagementMetrics />
         <CategoryDistribution />
+
       </div>
     </div>
   );
