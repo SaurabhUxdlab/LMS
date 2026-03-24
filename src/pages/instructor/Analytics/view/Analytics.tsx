@@ -287,7 +287,7 @@ const Analytics = () => {
                 <Line
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#15803D"   // 🔥 GREEN LINE
+                  stroke="#0057b8"   // 🔥 GREEN LINE
                   strokeWidth={3}
                   dot={{ r: 4 }}
                 />
@@ -318,7 +318,7 @@ const Analytics = () => {
 
                 <Bar
                   dataKey="students"
-                  fill="#15803D"   // 🔥 GREEN BAR
+                  fill="#0057b8"   // 🔥 GREEN BAR
                   radius={[6, 6, 0, 0]}
                 />
               </BarChart>

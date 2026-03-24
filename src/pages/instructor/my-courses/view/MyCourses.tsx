@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useMyCoursesViewModel } from "../viewmodel/MyCoursesViewModel"; 
 import { Edit, Trash, Eye, Plus, X, MoreHorizontal, ChevronRight, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,12 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import CreateCourse from "./CreateCourse";
 
 const MyCourses = () => {
   const { courses, search, setSearch, filter, setFilter } =
     useMyCoursesViewModel();
-  const [isCreateCourseOpen, setIsCreateCourseOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="relative min-h-screen">
@@ -30,8 +30,8 @@ const MyCourses = () => {
           </div>
 
           <Button 
-            className="bg-[#15803D] hover:bg-[#166534] text-white"
-            onClick={() => setIsCreateCourseOpen(true)}
+            className="bg-primary hover:bg-primary/90 text-white"
+            onClick={() => navigate("/instructor/create-course")}
           >
             <Plus size={16} className="mr-2" />
             Create Course
@@ -143,7 +143,7 @@ const MyCourses = () => {
                     <span
                       className={`text-xs px-2 py-1 rounded-full font-medium ${
                         course.status === "Published"
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-primary/10 text-primary"
                           : "bg-yellow-100 text-yellow-700"
                       }`}
                     >
@@ -153,8 +153,8 @@ const MyCourses = () => {
 
                   {/* KNOW MORE BUTTON */}
                   <button 
-                    onClick={() => console.log("Know more about:", course.title)}
-                    className="mt-2 text-[#15803D] hover:text-[#166534] text-sm font-medium flex items-center gap-1 group transition-colors"
+                    onClick={() => navigate(`/instructor/my-courses/${course.id}`)}
+                    className="mt-2 text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1 group transition-colors"
                   >
                     Know more
                     <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -173,36 +173,6 @@ const MyCourses = () => {
           <Button variant="outline">Next</Button>
         </div>
       </div>
-
-      {/* RIGHT SIDE PANEL - 60% WIDTH */}
-      {isCreateCourseOpen && (
-        <div className="fixed top-0 right-0 h-full w-[60%] bg-white shadow-2xl border-l z-50 overflow-hidden transform transition-transform duration-300 ease-in-out translate-x-0">
-          <div className="flex flex-col h-full">
-            {/* HEADER */}
-            <div className="flex justify-between items-start p-6 border-b flex-shrink-0">
-              <div>
-                <h2 className="text-2xl font-bold">Create Course</h2>
-                <p className="text-gray-500 text-sm">
-                  Fill out the details to create a new course.
-                </p>
-              </div>
-
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsCreateCourseOpen(false)}
-              >
-                <X size={20} />
-              </Button>
-            </div>
-
-            {/* BODY */}
-            <div className="flex-1 overflow-auto">
-              <CreateCourse />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

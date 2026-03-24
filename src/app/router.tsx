@@ -14,11 +14,13 @@ import StudentCourseDetail from "@/pages/admin/students/view/StudentCourseDetail
 import InstructorsList from "@/pages/admin/instructor/view/InstructorsList";
 import InstructorDetail from "@/pages/admin/instructor/view/InstructorDetail";
 import CoursesList from "@/pages/admin/course/view/CoursesList";
-import CourseDetail from "@/pages/admin/course/view/CourseDetail";
+import AdminCourseDetail from "@/pages/admin/course/view/CourseDetail";
 import { InstructorDashboard } from "@/pages/instructor/dashboard/view/InstructorDashboard";
 import InstructorMyCourses from "@/pages/instructor/my-courses/view/MyCourses";
 import Analytics from "@/pages/instructor/Analytics/view/Analytics";
 import Settings from "@/pages/instructor/settings/view/Settings";
+import CreateCourse from "@/pages/instructor/my-courses/view/CreateCourse";
+import InstructorCourseDetail from "@/pages/instructor/my-courses/view/CourseDetail";
 import SettingsPage from "@/pages/admin/settings/view/SettingsPage";
 import CoursePlayer from "@/pages/course/view/CoursePlayer";
 import QuizResultView from "@/pages/course/view/QuizResultView";
@@ -215,7 +217,7 @@ export const appRoutes: RouteObject[] = [
             path: "courses/:courseId",
             element: (
               <ProtectedRoute allowedRoles={["admin"]}>
-                <CourseDetail />
+                <InstructorCourseDetail />
               </ProtectedRoute>
             ),
           },
@@ -254,6 +256,22 @@ export const appRoutes: RouteObject[] = [
             element: (
               <ProtectedRoute allowedRoles={["instructor"]}>
                 <InstructorMyCourses />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "create-course",
+            element: (
+              <ProtectedRoute allowedRoles={["instructor"]}>
+                <CreateCourse />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "my-courses/:courseId",
+            element: (
+              <ProtectedRoute allowedRoles={["instructor"]}>
+                <InstructorCourseDetail />
               </ProtectedRoute>
             ),
           },

@@ -129,7 +129,7 @@ export const InstructorDashboard = () => {
                                                 <span
                                                     className={`px-3 py-1 text-xs rounded-full font-medium ${
                                                         course.status === "Published"
-                                                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                                                            ? "bg-primary/10 text-primary"
                                                             : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
                                                     }`}
                                                 >
