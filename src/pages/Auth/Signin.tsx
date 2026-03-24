@@ -1,4 +1,4 @@
-import {  Wrench } from "lucide-react"
+import { BookOpen } from "lucide-react"
 import { Link } from "react-router-dom"
 import { LoginForm } from "@/components/login-form"
 import loginImage from "@/assets/login.jpg"
@@ -18,7 +18,7 @@ export default function Signin() {
                                     whileHover={{ rotate: 45 }}
                                     transition={{ type: "spring", stiffness: 200, damping: 15 }}
                                 >
-                                    <Wrench className="h-7 w-7 text-white transition-transform sm:h-8 sm:w-8 bg-primary p-1 rounded-full" />
+                                    <BookOpen className="h-7 w-7 text-white transition-transform sm:h-8 sm:w-8 bg-primary p-1 rounded-full" />
                                 </motion.div>
                             </div>
                             <span className="text-xl font-bold sm:text-2xl">
